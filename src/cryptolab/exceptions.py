@@ -17,6 +17,18 @@ class InputError(CryptoLabError):
     exit_code = 6
 
 
+class AuthenticationError(CryptoLabError):
+    """Raised when authenticated decryption rejects a tag or associated data."""
+
+    exit_code = 4
+
+
+class VerificationError(CryptoLabError):
+    """Raised when a digest or message-authentication verification fails."""
+
+    exit_code = 4
+
+
 class MathematicalDomainError(CryptoLabError):
     """Raised when an operation is undefined for the supplied mathematical input."""
 

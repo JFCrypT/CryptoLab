@@ -32,7 +32,15 @@ The implemented foundation currently provides:
   One-Time Pad requirements;
 - the fixed Fibonacci right-shift LFSR convention, cycle detection, state traces, period,
   balance, cyclic runs, and periodic autocorrelation;
-- the controlled Caesar brute-force and Vernam key-reuse laboratories;
+- the controlled Caesar brute-force, Vernam key-reuse, and AES-ECB pattern-leakage
+  laboratories;
+- library-backed AES-128 and AES-256 in ECB, CBC, CFB-128, OFB, CTR, GCM, and XTS modes;
+- library-backed ChaCha20-Poly1305 authenticated encryption;
+- modern symmetric comparison tables, published vectors, and authentication-failure tests;
+- library-backed SHA-256 and SHA3-256 for text, hexadecimal bytes, and incremental file hashing;
+- full digest verification and byte-level avalanche visualization;
+- HMAC-SHA-256 generation and constant-time verification;
+- staged HKDF-SHA-256 extraction, PRK inspection, expansion, OKM generation, and RFC vectors;
 - human, JSON, and LaTeX interfaces with automated validation.
 
 These are internal development milestones only. They do not constitute a public pre-release.

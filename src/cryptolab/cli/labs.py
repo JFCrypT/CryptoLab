@@ -19,10 +19,12 @@ from cryptolab.cli.common import execute
 from cryptolab.encoding import parse_hex_bytes
 from cryptolab.exceptions import CryptoLabError, InputValidationError
 from cryptolab.labs.caesar_brute_force import run_caesar_brute_force_lab
+from cryptolab.labs.ecb_pattern_leakage import run_ecb_pattern_leakage_lab
 from cryptolab.labs.models import APPROVED_LABS
 from cryptolab.labs.vernam_key_reuse import run_vernam_key_reuse_lab
 from cryptolab.rendering.labs import (
     CaesarBruteForceLabView,
+    ECBPatternLeakageLabView,
     LabListView,
     VernamKeyReuseLabView,
 )
@@ -118,6 +120,31 @@ def vernam_key_reuse_command(
                 parse_hex_bytes(message_one_hex, label="first message"),
                 parse_hex_bytes(message_two_hex, label="second message"),
                 parse_hex_bytes(key_hex, label="reused key"),
+            )
+        ),
+    )
+
+
+@app.command("ecb-pattern-leakage")
+def ecb_pattern_leakage_command(
+    context: typer.Context,
+    plaintext_hex: Annotated[
+        str,
+        typer.Option(
+            "--plaintext-hex",
+            help="Block-aligned local plaintext containing at least two AES blocks.",
+        ),
+    ],
+    key_hex: Annotated[str, typer.Option("--key-hex", help="16-byte or 32-byte AES key.")],
+) -> None:
+    """Visualize repeated-block leakage under AES-ECB."""
+
+    _run(
+        context,
+        lambda: ECBPatternLeakageLabView(
+            run_ecb_pattern_leakage_lab(
+                key=parse_hex_bytes(key_hex, label="AES key"),
+                plaintext=parse_hex_bytes(plaintext_hex, label="ECB laboratory plaintext"),
             )
         ),
     )

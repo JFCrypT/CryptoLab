@@ -44,6 +44,27 @@ pre-release is planned.
   modules.
 - Documentation and automated tests for XOR, Vernam, One-Time Pad requirements, LFSRs,
   sequence analysis, and the two implemented laboratories.
+- Runtime integration with the established `cryptography` library for modern symmetric
+  primitives.
+- AES-128 and AES-256 encryption and decryption in ECB, CBC, CFB-128, OFB, CTR, GCM, and
+  XTS modes with strict parameter validation.
+- Explicit PKCS#7 padding support for ECB and CBC, fixed GCM nonce and tag formats, and
+  fixed XTS key and tweak representations.
+- ChaCha20-Poly1305 authenticated encryption and authenticated decryption.
+- Contextual AES-mode and AES-GCM versus ChaCha20-Poly1305 comparison commands.
+- Controlled AES-ECB pattern-leakage laboratory.
+- NIST, IEEE, and RFC vector tests for modern symmetric constructions plus round-trip,
+  property-based, invalid-input, and authentication-failure tests.
+- Detailed modern symmetric documentation and architecture decision record.
+- SHA-256 and SHA3-256 hashing for UTF-8 text, canonical hexadecimal bytes, and
+  incrementally processed files.
+- Full digest verification with constant-time comparison and structured avalanche-effect
+  visualization.
+- Contextual SHA-256 versus SHA3-256 and hash-versus-HMAC comparison commands.
+- Full-length HMAC-SHA-256 generation and verification with RFC 4231 vectors.
+- Staged HKDF-SHA-256 extraction and expansion, PRK and OKM inspection, omitted-salt
+  handling, output-length enforcement, and RFC 5869 vectors.
+- Hashing, HMAC, and HKDF documentation plus architecture decision record.
 
 ### Fixed
 

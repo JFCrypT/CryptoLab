@@ -16,7 +16,7 @@ def test_lab_registry_contains_exactly_four_approved_labs() -> None:
     assert [lab.status for lab in APPROVED_LABS] == [
         "implemented",
         "implemented",
-        "planned",
+        "implemented",
         "planned",
     ]
 

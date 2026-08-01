@@ -11,6 +11,7 @@ from cryptolab.cli.algebra import app as algebra_app
 from cryptolab.cli.classical import app as classical_app
 from cryptolab.cli.common import build_output_options
 from cryptolab.cli.diophantine import app as diophantine_app
+from cryptolab.cli.hashing import app as hashing_app
 from cryptolab.cli.integer import app as integer_app
 from cryptolab.cli.labs import app as lab_app
 from cryptolab.cli.modular import app as modular_app
@@ -36,6 +37,7 @@ app.add_typer(classical_app, name="classical")
 app.add_typer(lab_app, name="lab")
 app.add_typer(symmetric_app, name="symmetric")
 app.add_typer(sequence_app, name="sequence")
+app.add_typer(hashing_app, name="hashing")
 
 
 def version_callback(value: bool) -> None:

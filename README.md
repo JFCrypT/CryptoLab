@@ -183,7 +183,19 @@ The implemented mathematical foundation currently includes:
   convention;
 - period detection, state tables, register diagrams, balance, cyclic runs, and periodic
   autocorrelation;
-- controlled Caesar brute-force and Vernam key-reuse laboratories;
+- controlled Caesar brute-force, Vernam key-reuse, and AES-ECB pattern-leakage laboratories;
+- library-backed AES-128 and AES-256 operations in ECB, CBC, CFB-128, OFB, CTR, GCM, and
+  XTS modes;
+- explicit PKCS#7 padding, IV, initial-counter-block, nonce, tweak, AAD, and tag handling;
+- library-backed ChaCha20-Poly1305 authenticated encryption;
+- contextual AES-mode and AEAD comparison tables;
+- library-backed SHA-256 and SHA3-256 over UTF-8 text, canonical hexadecimal bytes, and
+  incrementally processed files;
+- full digest verification, SHA-2 versus SHA-3 comparison, and byte-level avalanche
+  visualization;
+- HMAC-SHA-256 generation and constant-time verification plus hash-versus-MAC comparison;
+- staged HKDF-SHA-256 extraction and expansion with PRK, info, OKM, RFC vectors, and a
+  complete-derivation cross-check;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
@@ -194,7 +206,8 @@ scope is implemented and validated.
 
 - Linux;
 - Python 3.12 or newer;
-- `uv` for dependency management, execution, locking, and builds.
+- `uv` for dependency management, execution, locking, and builds;
+- the `cryptography` package for modern library-backed primitives.
 
 Python 3.12, 3.13, and 3.14 are the intended CI matrix for version 1.0.0.
 
@@ -322,6 +335,54 @@ uv run cryptolab sequence lfsr generate "x^3+x^2+1" 101 21
 uv run cryptolab --explain sequence analyze 1010011 --max-lag 6
 ```
 
+Use modern library-backed symmetric cryptography:
+
+```bash
+uv run cryptolab symmetric aes encrypt cbc \
+  --key-hex 2b7e151628aed2a6abf7158809cf4f3c \
+  --iv-hex 000102030405060708090a0b0c0d0e0f \
+  --padding pkcs7 \
+  --plaintext-text "CryptoLab"
+
+uv run cryptolab symmetric aes encrypt gcm \
+  --key-hex 00000000000000000000000000000000 \
+  --nonce-hex 000000000000000000000000 \
+  --plaintext-hex 00000000000000000000000000000000 \
+  --aad-text "header"
+
+uv run cryptolab symmetric chacha20-poly1305 encrypt \
+  --key-hex 0000000000000000000000000000000000000000000000000000000000000000 \
+  --nonce-hex 000000000000000000000000 \
+  --plaintext-text "message" \
+  --aad-text "header"
+
+uv run cryptolab symmetric aes compare-modes
+uv run cryptolab symmetric compare-aead
+```
+
+Use hashing, HMAC, and HKDF:
+
+```bash
+uv run cryptolab hashing digest sha256 --message-text "abc"
+uv run cryptolab hashing digest sha3-256 --message-file artifact.bin
+uv run cryptolab --explain hashing avalanche sha256 \
+  --left-text "abc" \
+  --right-text "abd"
+
+uv run cryptolab hashing hmac-sha256 generate \
+  --key-text "shared key" \
+  --message-text "authenticated message"
+
+uv run cryptolab --explain hashing hkdf-sha256 derive \
+  --ikm-text "shared secret" \
+  --salt-text "CryptoLab salt" \
+  --info-text "session key" \
+  --length 32
+
+uv run cryptolab hashing compare-hashes
+uv run cryptolab hashing compare-hash-mac
+```
+
 Run the implemented controlled laboratories:
 
 ```bash
@@ -330,6 +391,10 @@ uv run cryptolab --explain lab vernam-key-reuse \
   --message-one-hex beca \
   --message-two-hex bcee \
   --key-hex fe12
+uv run cryptolab --explain lab ecb-pattern-leakage \
+  --key-hex 000102030405060708090a0b0c0d0e0f \
+  --plaintext-hex \
+00112233445566778899aabbccddeeff0000000000000000000000000000000000112233445566778899aabbccddeeff
 ```
 
 ## Output formats

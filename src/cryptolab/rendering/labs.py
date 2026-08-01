@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from cryptolab.labs.caesar_brute_force import CaesarBruteForceLabResult
+from cryptolab.labs.ecb_pattern_leakage import ECBPatternLeakageResult
 from cryptolab.labs.models import LabDescriptor
 from cryptolab.labs.vernam_key_reuse import VernamKeyReuseLabResult
 from cryptolab.rendering.common import dataclass_to_dict
@@ -157,4 +158,70 @@ class VernamKeyReuseLabView:
         ]
         if explain:
             lines.append(r"\text{Keystream reuse violates the one-time-use requirement.}")
+        return "\\\n".join(lines)
+
+
+@dataclass(frozen=True, slots=True)
+class ECBPatternLeakageLabView:
+    """Render repeated-block leakage in the controlled AES-ECB laboratory."""
+
+    result: ECBPatternLeakageResult
+
+    def render_human(self, console: Console, *, explain: bool) -> None:
+        table = Table(
+            "Block",
+            "Plaintext",
+            "Ciphertext",
+            "Repeated plaintext",
+            "Repeated ciphertext",
+        )
+        repeated_plaintext = set(self.result.repeated_plaintext_blocks)
+        repeated_ciphertext = set(self.result.repeated_ciphertext_blocks)
+        for block in self.result.blocks:
+            table.add_row(
+                str(block.index),
+                block.plaintext_hex,
+                block.ciphertext_hex,
+                str(block.plaintext_hex in repeated_plaintext),
+                str(block.ciphertext_hex in repeated_ciphertext),
+            )
+        console.print(table)
+        console.print(f"Repeated pattern preserved: {self.result.repeated_pattern_preserved}")
+        if explain:
+            console.print(f"Violated assumption: {self.result.violated_assumption}")
+            console.print(f"Security effect: {self.result.security_effect}")
+            console.print(f"Mitigation: {self.result.mitigation}")
+
+    def render_json(self, *, explain: bool) -> dict[str, Any]:
+        return {
+            "schema_version": "1.0",
+            "command": "lab.ecb-pattern-leakage",
+            "implementation": "controlled-laboratory",
+            "inputs": {"plaintext_hex": self.result.plaintext_hex},
+            "result": {
+                "ciphertext_hex": self.result.ciphertext_hex,
+                "block_count": self.result.block_count,
+                "unique_plaintext_blocks": self.result.unique_plaintext_blocks,
+                "unique_ciphertext_blocks": self.result.unique_ciphertext_blocks,
+                "repeated_plaintext_blocks": self.result.repeated_plaintext_blocks,
+                "repeated_ciphertext_blocks": self.result.repeated_ciphertext_blocks,
+                "repeated_pattern_preserved": self.result.repeated_pattern_preserved,
+                "blocks": [dataclass_to_dict(block) for block in self.result.blocks],
+                "violated_assumption": self.result.violated_assumption,
+                "security_effect": self.result.security_effect,
+                "mitigation": self.result.mitigation,
+            },
+            "trace": [],
+            "warnings": ["This laboratory uses deliberately vulnerable local AES-ECB data."],
+            "explanation_included": explain,
+        }
+
+    def render_latex(self, *, explain: bool) -> str:
+        rows = r" \\ ".join(
+            rf"{block.index}&\mathtt{{{block.plaintext_hex}}}&\mathtt{{{block.ciphertext_hex}}}"
+            for block in self.result.blocks
+        )
+        lines = [rf"\begin{{array}}{{rll}}i&P_i&C_i\\{rows}\end{{array}}"]
+        if explain:
+            lines.append(r"P_i=P_j\Longrightarrow C_i=C_j\quad\text{under ECB and one key}")
         return "\\\n".join(lines)

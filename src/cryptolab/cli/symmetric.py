@@ -1,4 +1,4 @@
-"""CLI commands for educational XOR, Vernam, and One-Time Pad material."""
+"""CLI commands for educational and library-backed symmetric cryptography."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import typer
 from rich.console import Console
 
 from cryptolab.cli.common import execute
+from cryptolab.cli.modern_symmetric import aes_app, chacha_app, compare_aead_command
 from cryptolab.encoding import read_byte_source
 from cryptolab.exceptions import CryptoLabError
 from cryptolab.rendering.symmetric import (
@@ -28,7 +29,7 @@ if TYPE_CHECKING:
 
 app = typer.Typer(
     name="symmetric",
-    help="Study transparent XOR and Vernam operations before modern symmetric cryptography.",
+    help="Study educational XOR/Vernam and library-backed modern symmetric cryptography.",
     no_args_is_help=True,
 )
 xor_app = typer.Typer(name="xor", help="Bitwise and bytewise XOR operations.", no_args_is_help=True)
@@ -41,6 +42,9 @@ otp_app = typer.Typer(
 app.add_typer(xor_app, name="xor")
 app.add_typer(vernam_app, name="vernam")
 app.add_typer(otp_app, name="otp")
+app.add_typer(aes_app, name="aes")
+app.add_typer(chacha_app, name="chacha20-poly1305")
+app.command("compare-aead")(compare_aead_command)
 
 
 def _run(context: typer.Context, factory: Callable[[], SupportsRender]) -> None:

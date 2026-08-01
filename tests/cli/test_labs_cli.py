@@ -65,3 +65,20 @@ def test_vernam_key_reuse_rejects_length_mismatch() -> None:
     )
     assert result.exit_code == 3
     assert "equal length" in result.stderr
+
+
+def test_ecb_pattern_leakage_cli() -> None:
+    block = "00112233445566778899aabbccddeeff"
+    result = runner.invoke(
+        app,
+        [
+            "lab",
+            "ecb-pattern-leakage",
+            "--plaintext-hex",
+            block + ("00" * 16) + block,
+            "--key-hex",
+            "000102030405060708090a0b0c0d0e0f",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "Repeated pattern preserved: True" in result.stdout
