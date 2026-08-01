@@ -14,7 +14,15 @@ The repository README is the complete self-contained entry point. This manual pr
 more detailed mathematical, architectural, cryptographic, laboratory, comparison, and
 validation material.
 
-## Current internal implementation batch
+## Current internal implementation status
 
-The current batch establishes the repository and implements integer arithmetic as a complete
-vertical slice from domain functions to CLI, renderers, tests, and documentation.
+The implemented mathematical foundation currently provides:
+
+- integer arithmetic, Euclidean traces, Bézout coefficients, primality, and factorization;
+- complete linear Diophantine equation solving and verification;
+- canonical modular operations and fast exponentiation;
+- units, inverses, and non-zero zero divisors;
+- linear congruences and the generalized Chinese Remainder Theorem;
+- human, JSON, and LaTeX interfaces with automated validation.
+
+These are internal development milestones only. They do not constitute a public pre-release.

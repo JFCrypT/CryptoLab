@@ -1,5 +1,13 @@
 """Educational mathematical foundations used by CryptoLab."""
 
+from cryptolab.mathematics.diophantine import (
+    DiophantineResult,
+    DiophantineSolutionKind,
+    ReducedDiophantineEquation,
+    reduce_equation,
+    solve_diophantine,
+    verify_diophantine_solution,
+)
 from cryptolab.mathematics.integers import (
     DivisorKind,
     EuclideanAlgorithmResult,
@@ -17,14 +25,39 @@ from cryptolab.mathematics.integers import (
     is_prime,
     lcm,
 )
+from cryptolab.mathematics.modular import (
+    Congruence,
+    CRTResult,
+    LinearCongruenceResult,
+    ModularInverseResult,
+    ModularPowerResult,
+    generalized_crt,
+    modular_add,
+    modular_inverse,
+    modular_multiply,
+    modular_power,
+    modular_subtract,
+    normalize,
+    solve_linear_congruence,
+    units,
+    zero_divisors,
+)
 
 __all__ = [
+    "CRTResult",
+    "Congruence",
+    "DiophantineResult",
+    "DiophantineSolutionKind",
     "DivisorKind",
     "EuclideanAlgorithmResult",
     "EuclideanDivisionResult",
     "ExtendedGCDResult",
     "FactorizationResult",
+    "LinearCongruenceResult",
+    "ModularInverseResult",
+    "ModularPowerResult",
     "PrimeTestResult",
+    "ReducedDiophantineEquation",
     "divides",
     "divisors",
     "euclidean_algorithm",
@@ -32,6 +65,19 @@ __all__ = [
     "extended_gcd",
     "factor_integer",
     "gcd",
+    "generalized_crt",
     "is_prime",
     "lcm",
+    "modular_add",
+    "modular_inverse",
+    "modular_multiply",
+    "modular_power",
+    "modular_subtract",
+    "normalize",
+    "reduce_equation",
+    "solve_diophantine",
+    "solve_linear_congruence",
+    "units",
+    "verify_diophantine_solution",
+    "zero_divisors",
 ]

@@ -21,7 +21,7 @@ uv run cryptolab --help
 ## Try Euclidean division
 
 ```bash
-uv run cryptolab integer divide -17 5 --explain
+uv run cryptolab --explain integer divide -17 5
 ```
 
 CryptoLab uses the remainder convention:
@@ -40,4 +40,19 @@ Therefore:
 
 ```bash
 uv run pytest
+```
+
+## Solve a Diophantine equation
+
+```bash
+uv run cryptolab --explain diophantine solve 33 17 1
+```
+
+## Solve a modular system
+
+```bash
+uv run cryptolab --explain modular crt \
+  --congruence 5:7 \
+  --congruence 0:6 \
+  --congruence=-1:5
 ```

@@ -3,9 +3,9 @@
 CryptoLab has one initial public release: version 1.0.0. The roadmap below describes
 internal implementation order only and does not define pre-releases.
 
-1. Repository, architecture, conventions, and integer arithmetic.
-2. Linear Diophantine equations and modular arithmetic.
-3. Algebraic structures and classical cryptography.
+1. **Completed:** repository, architecture, conventions, and integer arithmetic.
+2. **Completed:** linear Diophantine equations and modular arithmetic.
+3. **Next:** algebraic structures and classical cryptography.
 4. XOR, Vernam, One-Time Pad, LFSR, and sequence analysis.
 5. AES modes, ChaCha20-Poly1305, SHA-256, SHA3-256, HMAC, and HKDF.
 6. Educational and applied RSA.

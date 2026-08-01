@@ -1,5 +1,5 @@
-"""Output renderers for CryptoLab result models."""
+"""Output renderers for CryptoLab command results."""
 
-from cryptolab.rendering.common import OutputFormat, OutputOptions, emit
+from cryptolab.rendering.common import OutputFormat, OutputOptions
 
-__all__ = ["OutputFormat", "OutputOptions", "emit"]
+__all__ = ["OutputFormat", "OutputOptions"]

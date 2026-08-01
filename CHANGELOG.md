@@ -17,6 +17,13 @@ pre-release is planned.
   factorization, gcd, lcm, Euclidean traces, and extended gcd.
 - Human, JSON, and LaTeX renderers for the implemented commands.
 - Automated unit, property, CLI, and packaging tests for the implemented scope.
+- Linear Diophantine equation solving, reduction, verification, and complete parameterized
+  solution families.
+- Canonical modular operations, fast modular exponentiation, inverses, units, and non-zero
+  zero divisors.
+- Linear congruence solving and the generalized Chinese Remainder Theorem.
+- Human, JSON, and LaTeX renderers plus unit, integration, CLI, and property tests for the
+  new mathematics modules.
 
 ### Fixed
 

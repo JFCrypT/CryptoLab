@@ -124,7 +124,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "src/cryptolab/cli/**/*.py" = ["FBT", "PLR0917", "TC003"]
-"src/cryptolab/rendering/integer.py" = ["TC001", "TC002"]
+"src/cryptolab/rendering/**/*.py" = ["TC001", "TC002"]
 "tests/**/*.py" = ["ARG", "FBT", "PLR2004", "S101", "TC002", "TC003"]
 
 [tool.ruff.format]

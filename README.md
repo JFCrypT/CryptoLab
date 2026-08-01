@@ -157,19 +157,21 @@ These conventions must not change silently.
 
 ## Current implementation
 
-The first internal implementation batch provides the repository baseline and the integer
-arithmetic module:
+The implemented mathematical foundation currently includes:
 
 - Euclidean division;
-- divisibility;
-- positive, negative, and complete divisor enumeration;
-- gcd and lcm;
-- Euclidean algorithm traces;
-- extended gcd and Bézout coefficients;
-- bounded deterministic educational primality testing;
-- bounded educational factorization;
-- human, JSON, and LaTeX CLI output for implemented commands;
-- unit and property-based tests for the implemented domain.
+- divisibility and complete divisor enumeration;
+- gcd, lcm, Euclidean traces, extended gcd, and Bézout coefficients;
+- bounded deterministic educational primality testing and factorization;
+- complete solution classification for linear Diophantine equations;
+- equivalent-equation reduction and candidate-solution verification;
+- canonical modular arithmetic;
+- fast modular exponentiation with structured traces;
+- units, multiplicative inverses, and non-zero zero divisors;
+- linear congruences with every canonical solution;
+- the generalized Chinese Remainder Theorem for compatible non-coprime moduli;
+- human, JSON, and LaTeX output;
+- unit, integration, CLI, and property-based tests for the implemented domain.
 
 The first public release remains version 1.0.0 and will be created only after the complete
 scope is implemented and validated.
@@ -207,7 +209,7 @@ uv run cryptolab --help
 Perform Euclidean division:
 
 ```bash
-uv run cryptolab integer divide -17 5 --explain
+uv run cryptolab --explain integer divide -17 5
 ```
 
 Expected mathematical result:
@@ -220,19 +222,40 @@ Expected mathematical result:
 Use a negative divisor while preserving the same remainder convention:
 
 ```bash
-uv run cryptolab integer divide -17 -5 --format json
+uv run cryptolab --format json integer divide -17 -5
 ```
 
 Compute an extended gcd:
 
 ```bash
-uv run cryptolab integer extended-gcd 250 110 --explain
+uv run cryptolab --explain integer extended-gcd 250 110
 ```
 
 Factor a small educational integer:
 
 ```bash
 uv run cryptolab integer factor -92400
+```
+
+Solve a linear Diophantine equation:
+
+```bash
+uv run cryptolab --explain diophantine solve 33 17 1
+```
+
+Solve a linear congruence:
+
+```bash
+uv run cryptolab --explain modular solve-linear 15 30 55
+```
+
+Solve a generalized CRT system:
+
+```bash
+uv run cryptolab --explain modular crt \
+  --congruence 5:7 \
+  --congruence 0:6 \
+  --congruence=-1:5
 ```
 
 ## Output formats

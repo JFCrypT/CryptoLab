@@ -8,7 +8,9 @@ from typing import Annotated
 import typer
 
 from cryptolab.cli.common import build_output_options
+from cryptolab.cli.diophantine import app as diophantine_app
 from cryptolab.cli.integer import app as integer_app
+from cryptolab.cli.modular import app as modular_app
 from cryptolab.metadata import PROJECT_TITLE, __version__
 from cryptolab.rendering.common import OutputFormat
 
@@ -22,6 +24,8 @@ app = typer.Typer(
     rich_markup_mode="rich",
 )
 app.add_typer(integer_app, name="integer")
+app.add_typer(diophantine_app, name="diophantine")
+app.add_typer(modular_app, name="modular")
 
 
 def version_callback(value: bool) -> None:

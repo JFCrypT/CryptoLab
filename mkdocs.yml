@@ -45,8 +45,11 @@ nav:
       - Validation model: foundations/validation-model.md
   - Mathematics:
       - Integer arithmetic: mathematics/integer-arithmetic.md
+      - Linear Diophantine equations: mathematics/diophantine-equations.md
+      - Modular arithmetic: mathematics/modular-arithmetic.md
   - Architecture decisions:
       - Foundational architecture: decisions/0001-foundational-architecture.md
       - Mathematical conventions: decisions/0002-mathematical-conventions.md
+      - Diophantine and modular conventions: decisions/0003-diophantine-and-modular-conventions.md
   - Roadmap to 1.0.0: roadmap.md
   - References: references.md
