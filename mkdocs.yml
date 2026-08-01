@@ -1,0 +1,52 @@
+site_name: CryptoLab — Applied Cryptography Laboratory
+site_description: Didactic laboratory for cryptographic mathematics and applied cryptography.
+repo_url: https://github.com/JFCrypT/CryptoLab
+repo_name: JFCrypT/CryptoLab
+docs_dir: docs
+site_dir: site
+strict: true
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Foundations:
+      - Implementation categories: foundations/implementation-categories.md
+      - Validation model: foundations/validation-model.md
+  - Mathematics:
+      - Integer arithmetic: mathematics/integer-arithmetic.md
+  - Architecture decisions:
+      - Foundational architecture: decisions/0001-foundational-architecture.md
+      - Mathematical conventions: decisions/0002-mathematical-conventions.md
+  - Roadmap to 1.0.0: roadmap.md
+  - References: references.md

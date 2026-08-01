@@ -1,0 +1,21 @@
+name: Feature request
+description: Propose a feature that remains inside the approved CryptoLab scope.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Educational or cryptographic motivation
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Relationship to the approved version 1.0.0 scope
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Proposed validation and references

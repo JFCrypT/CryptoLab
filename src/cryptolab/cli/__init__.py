@@ -1,0 +1,1 @@
+"""CryptoLab command-line interface."""

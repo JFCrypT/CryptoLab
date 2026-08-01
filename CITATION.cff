@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "CryptoLab — Applied Cryptography Laboratory"
+message: "If you use CryptoLab in academic or educational work, please cite this repository."
+type: software
+authors:
+  - family-names: "Castro Tramontina"
+    given-names: "José Federico"
+repository-code: "https://github.com/JFCrypT/CryptoLab"
+license: MIT
+version: 1.0.0
+keywords:
+  - cryptography
+  - number theory
+  - cryptanalysis
+  - education
+  - applied cryptography
