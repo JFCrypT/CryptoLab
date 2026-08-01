@@ -7,6 +7,8 @@ from typing import Annotated
 
 import typer
 
+from cryptolab.cli.algebra import app as algebra_app
+from cryptolab.cli.classical import app as classical_app
 from cryptolab.cli.common import build_output_options
 from cryptolab.cli.diophantine import app as diophantine_app
 from cryptolab.cli.integer import app as integer_app
@@ -26,6 +28,8 @@ app = typer.Typer(
 app.add_typer(integer_app, name="integer")
 app.add_typer(diophantine_app, name="diophantine")
 app.add_typer(modular_app, name="modular")
+app.add_typer(algebra_app, name="algebra")
+app.add_typer(classical_app, name="classical")
 
 
 def version_callback(value: bool) -> None:

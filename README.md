@@ -170,6 +170,13 @@ The implemented mathematical foundation currently includes:
 - units, multiplicative inverses, and non-zero zero divisors;
 - linear congruences with every canonical solution;
 - the generalized Chinese Remainder Theorem for compatible non-coprime moduli;
+- structural analysis of `Z_n`, element orders, generated subgroups, generators, and
+  primitive roots modulo a prime;
+- strict configurable alphabets with built-in Latin and Spanish uppercase data;
+- Caesar encryption, decryption, tables, complete key enumeration, and frequency counts;
+- Vigenère encryption, decryption, and repeated-key alignment;
+- Polybius grid construction, canonical coordinate tokens, encryption, decryption, and
+  coordinate validation;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
@@ -256,6 +263,34 @@ uv run cryptolab --explain modular crt \
   --congruence 5:7 \
   --congruence 0:6 \
   --congruence=-1:5
+```
+
+Inspect algebraic structure and primitive roots:
+
+```bash
+uv run cryptolab --explain algebra zn 15
+uv run cryptolab --explain algebra primitive-roots 17
+```
+
+Encrypt and decrypt with a configurable Caesar alphabet:
+
+```bash
+uv run cryptolab classical caesar encrypt PARABOLOIDE 9 --alphabet spanish-upper
+uv run cryptolab classical caesar decrypt YJAJKXTXQMN 9 --alphabet spanish-upper
+```
+
+Inspect Vigenère key alignment:
+
+```bash
+uv run cryptolab --explain classical vigenere encrypt ATTACKATDAWN LEMON
+```
+
+Build and use a Polybius grid:
+
+```bash
+uv run cryptolab classical polybius build --alphabet spanish-upper
+uv run cryptolab classical polybius encrypt "ABC D"
+uv run cryptolab classical polybius decrypt "11 12 13 u+20 14"
 ```
 
 ## Output formats

@@ -47,9 +47,16 @@ nav:
       - Integer arithmetic: mathematics/integer-arithmetic.md
       - Linear Diophantine equations: mathematics/diophantine-equations.md
       - Modular arithmetic: mathematics/modular-arithmetic.md
+      - Algebraic structures: mathematics/algebraic-structures.md
+  - Classical cryptography:
+      - Configurable alphabets: classical/alphabets.md
+      - Caesar cipher: classical/caesar.md
+      - Vigenère cipher: classical/vigenere.md
+      - Polybius square: classical/polybius.md
   - Architecture decisions:
       - Foundational architecture: decisions/0001-foundational-architecture.md
       - Mathematical conventions: decisions/0002-mathematical-conventions.md
       - Diophantine and modular conventions: decisions/0003-diophantine-and-modular-conventions.md
+      - Algebra and classical conventions: decisions/0004-algebra-and-classical-conventions.md
   - Roadmap to 1.0.0: roadmap.md
   - References: references.md

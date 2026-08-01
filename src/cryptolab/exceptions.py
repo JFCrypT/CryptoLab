@@ -7,6 +7,10 @@ class CryptoLabError(Exception):
     exit_code = 3
 
 
+class InputValidationError(CryptoLabError):
+    """Raised when structured user input violates a documented format or convention."""
+
+
 class MathematicalDomainError(CryptoLabError):
     """Raised when an operation is undefined for the supplied mathematical input."""
 

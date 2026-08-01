@@ -7,7 +7,10 @@ The project distinguishes teaching sources, normative sources, and test-vector s
 - Menezes, A. J., van Oorschot, P. C., and Vanstone, S. A. *Handbook of Applied
   Cryptography*. CRC Press, 1996.
 - Project teaching notes on integer arithmetic, Diophantine equations, modular arithmetic,
-  classical cryptography, RSA, and private-key cryptography.
+  algebraic structures, classical cryptography, RSA, and private-key cryptography.
+
+Teaching sources guide explanations and examples. They do not replace current standards for
+modern primitives.
 
 ## Normative and validation sources
 

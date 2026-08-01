@@ -22,8 +22,16 @@ pre-release is planned.
 - Canonical modular operations, fast modular exponentiation, inverses, units, and non-zero
   zero divisors.
 - Linear congruence solving and the generalized Chinese Remainder Theorem.
-- Human, JSON, and LaTeX renderers plus unit, integration, CLI, and property tests for the
-  new mathematics modules.
+- Algebraic descriptions of `Z_n`, additive and multiplicative element orders, generated
+  subgroups, group generators, and primitive roots modulo a prime.
+- Built-in Latin and Spanish uppercase alphabets plus strict custom JSON alphabet loading.
+- Caesar encryption, decryption, modular transformation tables, exhaustive key enumeration,
+  and basic character-frequency analysis.
+- Vigenère encryption, decryption, and repeated-key alignment with explicit unknown-symbol
+  behavior.
+- Polybius grid construction, canonical coordinate tokens, preserved Unicode tokens,
+  encryption, decryption, and coordinate validation.
+- Documentation and automated tests for algebraic structures and classical ciphers.
 
 ### Fixed
 
@@ -31,4 +39,3 @@ pre-release is planned.
 - Removed the deprecated license classifier while retaining PEP 639 license metadata.
 - Clarified that pre-commit hook installation requires an initialized Git repository.
 - Finalized type-only imports and dataclass narrowing for clean Ruff and mypy checks.
-
