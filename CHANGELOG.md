@@ -32,6 +32,18 @@ pre-release is planned.
 - Polybius grid construction, canonical coordinate tokens, preserved Unicode tokens,
   encryption, decryption, and coordinate validation.
 - Documentation and automated tests for algebraic structures and classical ciphers.
+- Strict binary, hexadecimal, UTF-8, and file byte-input helpers.
+- XOR truth tables, equal-length bitwise XOR, and equal-length bytewise XOR with structured
+  traces.
+- Educational Vernam encryption and decryption plus explicit One-Time Pad requirements.
+- Fibonacci right-shift LFSR parsing, generation, state transitions, diagrams, and constant-
+  memory period detection under one fixed convention.
+- Elementary binary-sequence period, balance, cyclic-run, and periodic-autocorrelation
+  analysis.
+- Controlled Caesar brute-force and Vernam key-reuse laboratories backed by existing public
+  modules.
+- Documentation and automated tests for XOR, Vernam, One-Time Pad requirements, LFSRs,
+  sequence analysis, and the two implemented laboratories.
 
 ### Fixed
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import asdict, dataclass, is_dataclass
 from enum import StrEnum
 from json import dumps
@@ -83,7 +84,7 @@ def emit(renderable: SupportsRender, options: OutputOptions) -> None:
         content = renderable.render_latex(explain=options.explain).rstrip() + "\n"
 
     if options.output is None:
-        Console(no_color=True, markup=False, highlight=False).print(content, end="")
+        sys.stdout.write(content)
     else:
         _write_atomic(options.output, content)
 

@@ -11,6 +11,12 @@ class InputValidationError(CryptoLabError):
     """Raised when structured user input violates a documented format or convention."""
 
 
+class InputError(CryptoLabError):
+    """Raised when a requested input file cannot be read."""
+
+    exit_code = 6
+
+
 class MathematicalDomainError(CryptoLabError):
     """Raised when an operation is undefined for the supplied mathematical input."""
 

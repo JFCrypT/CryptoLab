@@ -177,6 +177,13 @@ The implemented mathematical foundation currently includes:
 - Vigenère encryption, decryption, and repeated-key alignment;
 - Polybius grid construction, canonical coordinate tokens, encryption, decryption, and
   coordinate validation;
+- XOR truth tables, equal-length bitwise and bytewise XOR, and explicit byte sources;
+- educational Vernam encryption and decryption plus strict One-Time Pad requirements;
+- Fibonacci right-shift LFSRs with one fixed polynomial, state, bit-ordering, and output
+  convention;
+- period detection, state tables, register diagrams, balance, cyclic runs, and periodic
+  autocorrelation;
+- controlled Caesar brute-force and Vernam key-reuse laboratories;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
@@ -291,6 +298,38 @@ Build and use a Polybius grid:
 uv run cryptolab classical polybius build --alphabet spanish-upper
 uv run cryptolab classical polybius encrypt "ABC D"
 uv run cryptolab classical polybius decrypt "11 12 13 u+20 14"
+```
+
+Inspect XOR and reproduce the Vernam teaching example:
+
+```bash
+uv run cryptolab symmetric xor truth-table
+uv run cryptolab symmetric xor bits 1011 1111
+uv run cryptolab --explain symmetric vernam encrypt \
+  --message-hex beca \
+  --key-hex fe12
+uv run cryptolab symmetric vernam decrypt \
+  --ciphertext-hex 40d8 \
+  --key-hex fe12
+```
+
+Generate and analyze an LFSR sequence under the fixed CryptoLab convention:
+
+```bash
+uv run cryptolab --explain sequence lfsr diagram "x^3+x^2+1"
+uv run cryptolab --explain sequence lfsr period "x^3+x^2+1" 101
+uv run cryptolab sequence lfsr generate "x^3+x^2+1" 101 21
+uv run cryptolab --explain sequence analyze 1010011 --max-lag 6
+```
+
+Run the implemented controlled laboratories:
+
+```bash
+uv run cryptolab lab caesar-brute-force KHOOR
+uv run cryptolab --explain lab vernam-key-reuse \
+  --message-one-hex beca \
+  --message-two-hex bcee \
+  --key-hex fe12
 ```
 
 ## Output formats

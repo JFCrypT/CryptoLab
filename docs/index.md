@@ -28,6 +28,11 @@ The implemented foundation currently provides:
 - Caesar encryption, decryption, tables, complete key enumeration, and frequency counts;
 - Vigenère encryption, decryption, and repeated-key alignment;
 - Polybius grid construction, coordinate validation, encryption, and decryption;
+- XOR truth tables, bitwise and bytewise XOR, Vernam encryption and decryption, and strict
+  One-Time Pad requirements;
+- the fixed Fibonacci right-shift LFSR convention, cycle detection, state traces, period,
+  balance, cyclic runs, and periodic autocorrelation;
+- the controlled Caesar brute-force and Vernam key-reuse laboratories;
 - human, JSON, and LaTeX interfaces with automated validation.
 
 These are internal development milestones only. They do not constitute a public pre-release.

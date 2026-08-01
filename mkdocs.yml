@@ -53,10 +53,19 @@ nav:
       - Caesar cipher: classical/caesar.md
       - Vigenère cipher: classical/vigenere.md
       - Polybius square: classical/polybius.md
+  - XOR and Vernam:
+      - XOR, Vernam, and One-Time Pad: symmetric/xor-vernam-otp.md
+  - Pseudorandom sequences:
+      - Linear Feedback Shift Registers: sequences/lfsr.md
+      - Elementary sequence analysis: sequences/analysis.md
+  - Controlled laboratories:
+      - Caesar brute force: laboratories/caesar-brute-force.md
+      - Vernam key reuse: laboratories/vernam-key-reuse.md
   - Architecture decisions:
       - Foundational architecture: decisions/0001-foundational-architecture.md
       - Mathematical conventions: decisions/0002-mathematical-conventions.md
       - Diophantine and modular conventions: decisions/0003-diophantine-and-modular-conventions.md
       - Algebra and classical conventions: decisions/0004-algebra-and-classical-conventions.md
+      - XOR, Vernam, LFSR, and laboratory conventions: decisions/0005-xor-vernam-lfsr-and-laboratory-conventions.md
   - Roadmap to 1.0.0: roadmap.md
   - References: references.md
