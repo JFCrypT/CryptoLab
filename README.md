@@ -581,8 +581,11 @@ Optional direct SageMath cross-validation is documented in
 and [`sagemath/README.md`](sagemath/README.md). SageMath remains isolated from the normal
 runtime package and does not block mandatory CI or release acceptance.
 
-Publishing the generated static documentation through GitHub Pages is optional. CryptoLab
-itself is not a web application and no cryptographic operation is executed remotely.
+The generated MkDocs documentation is published through GitHub Pages at
+[`https://jfcrypt.github.io/CryptoLab/`](https://jfcrypt.github.io/CryptoLab/).
+
+CryptoLab itself is not a web application. GitHub Pages serves only the generated static
+documentation, and no cryptographic operation is executed remotely.
 
 ## Security statement
 

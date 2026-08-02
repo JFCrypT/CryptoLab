@@ -45,7 +45,7 @@ cryptolab = "cryptolab.cli.app:main"
 [project.urls]
 Homepage = "https://github.com/JFCrypT/CryptoLab"
 Repository = "https://github.com/JFCrypT/CryptoLab"
-Documentation = "https://github.com/JFCrypT/CryptoLab/tree/main/docs"
+Documentation = "https://jfcrypt.github.io/CryptoLab/"
 Changelog = "https://github.com/JFCrypT/CryptoLab/blob/main/CHANGELOG.md"
 Issues = "https://github.com/JFCrypT/CryptoLab/issues"
 Security = "https://github.com/JFCrypT/CryptoLab/security/policy"

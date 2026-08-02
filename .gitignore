@@ -25,6 +25,7 @@ site/
 # Editors
 .idea/
 .vscode/
+*.code-workspace
 *.swp
 
 # Operating systems

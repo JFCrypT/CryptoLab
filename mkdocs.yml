@@ -1,5 +1,6 @@
 site_name: CryptoLab — Applied Cryptography Laboratory
 site_description: Didactic laboratory for cryptographic mathematics and applied cryptography.
+site_url: https://jfcrypt.github.io/CryptoLab/
 repo_url: https://github.com/JFCrypT/CryptoLab
 repo_name: JFCrypT/CryptoLab
 docs_dir: docs
