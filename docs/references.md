@@ -63,3 +63,19 @@ formal verification, or an independent audit.
   Reference Problems.
 - RFC 5869, *HMAC-based Extract-and-Expand Key Derivation Function (HKDF)*, for the
   extract-and-expand step applied to the educational shared secret.
+
+## Elliptic curves and modern curve primitives
+
+- Alfred J. Menezes, Paul C. van Oorschot, and Scott A. Vanstone, *Handbook of Applied
+  Cryptography*, Chapter 6 for elliptic-curve arithmetic and the elliptic-curve discrete
+  logarithm problem.
+- RFC 7748, *Elliptic Curves for Security*, for X25519 encodings, the bilateral key-exchange
+  vector, the all-zero shared-secret check, and the requirement to apply a key-derivation
+  function in protocol context.
+- RFC 8032, *Edwards-Curve Digital Signature Algorithm (EdDSA)*, for Ed25519 key and
+  signature sizes and published signature vectors.
+- `cryptography` project documentation for X25519 and Ed25519 key generation, exchange,
+  signing, verification, and serialization.
+
+The educational curves in CryptoLab are independent teaching examples. RFC vectors validate
+library interoperability; they do not certify CryptoLab or establish production readiness.

@@ -25,6 +25,32 @@ from cryptolab.public_key.diffie_hellman import (
     inspect_dh_group,
     perform_dh_exchange,
 )
+from cryptolab.public_key.elliptic_curve import (
+    add_points,
+    build_elliptic_curve,
+    enumerate_curve_points,
+    negate_point,
+    parse_point_token,
+    point_order,
+    scalar_multiply,
+)
+from cryptolab.public_key.modern_curves import (
+    DEFAULT_X25519_DERIVED_KEY_BYTES,
+    DEFAULT_X25519_HKDF_INFO_TEXT,
+    ed25519_private_key_from_raw,
+    ed25519_public_key_from_raw,
+    ed25519_sign,
+    ed25519_verify,
+    generate_ed25519_key_pair,
+    generate_x25519_key_pair,
+    key_agreement_profiles,
+    load_ed25519_private_key,
+    load_ed25519_public_key,
+    load_x25519_private_key,
+    perform_x25519_exchange,
+    signature_profiles,
+    x25519_private_key_from_raw,
+)
 from cryptolab.public_key.rsa_applied import (
     generate_rsa_key_pair,
     load_rsa_private_key,
@@ -45,6 +71,21 @@ from cryptolab.public_key.rsa_educational import (
     textbook_rsa_encrypt,
 )
 from cryptolab.rendering.diffie_hellman import DHExchangeView, DHGroupView
+from cryptolab.rendering.elliptic_curve import (
+    ECAdditionView,
+    ECCurveInspectionView,
+    ECNegationView,
+    ECPointOrderView,
+    ECScalarMultiplicationView,
+)
+from cryptolab.rendering.modern_curves import (
+    CurveKeyGenerationView,
+    Ed25519SignatureView,
+    Ed25519VerificationView,
+    KeyAgreementComparisonView,
+    SignatureComparisonView,
+    X25519ExchangeView,
+)
 from cryptolab.rendering.rsa import (
     EducationalRSADecryptionView,
     EducationalRSAGenerationView,
@@ -59,6 +100,8 @@ from cryptolab.rendering.rsa import (
 )
 
 if TYPE_CHECKING:
+    from cryptography.hazmat.primitives.asymmetric import ed25519, x25519
+
     from cryptolab.rendering.common import SupportsRender
 
 
@@ -90,6 +133,21 @@ convert_app = typer.Typer(
 dh_app = typer.Typer(
     name="dh",
     help="Inspect educational finite-field Diffie-Hellman over small prime fields.",
+    no_args_is_help=True,
+)
+ecc_app = typer.Typer(
+    name="ecc",
+    help="Inspect educational elliptic-curve arithmetic over small prime fields.",
+    no_args_is_help=True,
+)
+x25519_app = typer.Typer(
+    name="x25519",
+    help="Use library-backed X25519 key agreement and HKDF-SHA-256.",
+    no_args_is_help=True,
+)
+ed25519_app = typer.Typer(
+    name="ed25519",
+    help="Use library-backed Ed25519 signing and verification.",
     no_args_is_help=True,
 )
 
@@ -145,6 +203,56 @@ def _write_atomic_bytes(path: Path, data: bytes, *, mode: int) -> None:
         temporary_path.replace(path)
     except OSError as error:
         raise OutputError(f"Unable to write output file: {path}") from error
+
+
+def _load_x25519_private_source(
+    *,
+    label: str,
+    key_file: Path | None,
+    key_hex: str | None,
+) -> x25519.X25519PrivateKey:
+    if (key_file is None) == (key_hex is None):
+        raise InputValidationError(
+            f"Select exactly one source for {label}: a PEM file or raw hexadecimal key."
+        )
+    if key_file is not None:
+        return load_x25519_private_key(_read_file(key_file, label=label))
+    if key_hex is None:  # pragma: no cover
+        raise AssertionError("Raw X25519 key source disappeared.")
+    return x25519_private_key_from_raw(parse_hex_bytes(key_hex, label=label))
+
+
+def _load_ed25519_private_source(
+    *,
+    key_file: Path | None,
+    key_hex: str | None,
+) -> ed25519.Ed25519PrivateKey:
+    if (key_file is None) == (key_hex is None):
+        raise InputValidationError(
+            "Select exactly one Ed25519 private-key source: --private-key-file or "
+            "--private-key-hex."
+        )
+    if key_file is not None:
+        return load_ed25519_private_key(_read_file(key_file, label="Ed25519 private key"))
+    if key_hex is None:  # pragma: no cover
+        raise AssertionError("Raw Ed25519 private key source disappeared.")
+    return ed25519_private_key_from_raw(parse_hex_bytes(key_hex, label="Ed25519 private key"))
+
+
+def _load_ed25519_public_source(
+    *,
+    key_file: Path | None,
+    key_hex: str | None,
+) -> ed25519.Ed25519PublicKey:
+    if (key_file is None) == (key_hex is None):
+        raise InputValidationError(
+            "Select exactly one Ed25519 public-key source: --public-key-file or --public-key-hex."
+        )
+    if key_file is not None:
+        return load_ed25519_public_key(_read_file(key_file, label="Ed25519 public key"))
+    if key_hex is None:  # pragma: no cover
+        raise AssertionError("Raw Ed25519 public key source disappeared.")
+    return ed25519_public_key_from_raw(parse_hex_bytes(key_hex, label="Ed25519 public key"))
 
 
 @educational_app.command("inspect")
@@ -480,6 +588,312 @@ def dh_exchange_command(
     )
 
 
+@ecc_app.command("inspect")
+def ecc_inspect_command(
+    context: typer.Context,
+    prime: Annotated[int, typer.Argument(help="Small prime modulus p.")],
+    a: Annotated[int, typer.Argument(help="Curve coefficient a.")],
+    b: Annotated[int, typer.Argument(help="Curve coefficient b.")],
+) -> None:
+    """Validate a curve, enumerate its points, and report its group order."""
+
+    _run(
+        context,
+        lambda: ECCurveInspectionView(enumerate_curve_points(build_elliptic_curve(prime, a, b))),
+    )
+
+
+@ecc_app.command("negate")
+def ecc_negate_command(
+    context: typer.Context,
+    prime: Annotated[int, typer.Argument(help="Small prime modulus p.")],
+    a: Annotated[int, typer.Argument(help="Curve coefficient a.")],
+    b: Annotated[int, typer.Argument(help="Curve coefficient b.")],
+    point: Annotated[str, typer.Argument(help="Point token x:y or infinity.")],
+) -> None:
+    """Compute the additive inverse of one curve point."""
+
+    curve = build_elliptic_curve(prime, a, b)
+    _run(context, lambda: ECNegationView(negate_point(curve, parse_point_token(point))))
+
+
+@ecc_app.command("add")
+def ecc_add_command(
+    context: typer.Context,
+    prime: Annotated[int, typer.Argument(help="Small prime modulus p.")],
+    a: Annotated[int, typer.Argument(help="Curve coefficient a.")],
+    b: Annotated[int, typer.Argument(help="Curve coefficient b.")],
+    left: Annotated[str, typer.Argument(help="Left point token x:y or infinity.")],
+    right: Annotated[str, typer.Argument(help="Right point token x:y or infinity.")],
+) -> None:
+    """Add two points, including doubling and the point at infinity."""
+
+    curve = build_elliptic_curve(prime, a, b)
+    _run(
+        context,
+        lambda: ECAdditionView(
+            add_points(curve, parse_point_token(left), parse_point_token(right))
+        ),
+    )
+
+
+@ecc_app.command("multiply", context_settings={"ignore_unknown_options": True})
+def ecc_multiply_command(
+    context: typer.Context,
+    prime: Annotated[int, typer.Argument(help="Small prime modulus p.")],
+    a: Annotated[int, typer.Argument(help="Curve coefficient a.")],
+    b: Annotated[int, typer.Argument(help="Curve coefficient b.")],
+    scalar: Annotated[int, typer.Argument(help="Integer scalar k.")],
+    point: Annotated[str, typer.Argument(help="Point token x:y or infinity.")],
+) -> None:
+    """Multiply one point by an integer with double-and-add."""
+
+    curve = build_elliptic_curve(prime, a, b)
+    _run(
+        context,
+        lambda: ECScalarMultiplicationView(
+            scalar_multiply(curve, scalar, parse_point_token(point))
+        ),
+    )
+
+
+@ecc_app.command("subgroup")
+def ecc_subgroup_command(
+    context: typer.Context,
+    prime: Annotated[int, typer.Argument(help="Small prime modulus p.")],
+    a: Annotated[int, typer.Argument(help="Curve coefficient a.")],
+    b: Annotated[int, typer.Argument(help="Curve coefficient b.")],
+    point: Annotated[str, typer.Argument(help="Point token x:y or infinity.")],
+) -> None:
+    """Compute a point order and enumerate the generated subgroup."""
+
+    curve = build_elliptic_curve(prime, a, b)
+    _run(context, lambda: ECPointOrderView(point_order(curve, parse_point_token(point))))
+
+
+@x25519_app.command("generate")
+def x25519_generate_command(
+    context: typer.Context,
+    private_key_out: Annotated[
+        Path,
+        typer.Option("--private-key-out", help="Write unencrypted PKCS#8 PEM here."),
+    ],
+    public_key_out: Annotated[
+        Path,
+        typer.Option("--public-key-out", help="Write SubjectPublicKeyInfo PEM here."),
+    ],
+    overwrite: Annotated[
+        bool,
+        typer.Option("--overwrite", help="Replace existing output files explicitly."),
+    ] = False,
+) -> None:
+    """Generate and serialize one X25519 key pair."""
+
+    def factory() -> CurveKeyGenerationView:
+        _validate_output_paths(private_key_out, public_key_out, overwrite=overwrite)
+        result = generate_x25519_key_pair()
+        _write_atomic_bytes(private_key_out, result.private_pem, mode=0o600)
+        _write_atomic_bytes(public_key_out, result.public_pem, mode=0o644)
+        return CurveKeyGenerationView(result, str(private_key_out), str(public_key_out))
+
+    _run(context, factory)
+
+
+@x25519_app.command("exchange")
+def x25519_exchange_command(
+    context: typer.Context,
+    alice_private_key_file: Annotated[
+        Path | None,
+        typer.Option("--alice-private-key-file", help="Alice PKCS#8 PEM private key."),
+    ] = None,
+    alice_private_key_hex: Annotated[
+        str | None,
+        typer.Option("--alice-private-key-hex", help="Alice raw 32-byte private key."),
+    ] = None,
+    bob_private_key_file: Annotated[
+        Path | None,
+        typer.Option("--bob-private-key-file", help="Bob PKCS#8 PEM private key."),
+    ] = None,
+    bob_private_key_hex: Annotated[
+        str | None,
+        typer.Option("--bob-private-key-hex", help="Bob raw 32-byte private key."),
+    ] = None,
+    salt_hex: Annotated[
+        str | None,
+        typer.Option("--salt-hex", help="Optional HKDF salt as hexadecimal bytes."),
+    ] = None,
+    info_text: Annotated[
+        str,
+        typer.Option("--info-text", help="HKDF context encoded strictly as UTF-8."),
+    ] = DEFAULT_X25519_HKDF_INFO_TEXT,
+    length: Annotated[
+        int,
+        typer.Option("--length", help="Derived session-key length in bytes."),
+    ] = DEFAULT_X25519_DERIVED_KEY_BYTES,
+) -> None:
+    """Compute both sides of an X25519 exchange and apply HKDF-SHA-256."""
+
+    def factory() -> X25519ExchangeView:
+        alice_private = _load_x25519_private_source(
+            label="Alice X25519 private key",
+            key_file=alice_private_key_file,
+            key_hex=alice_private_key_hex,
+        )
+        bob_private = _load_x25519_private_source(
+            label="Bob X25519 private key",
+            key_file=bob_private_key_file,
+            key_hex=bob_private_key_hex,
+        )
+        salt = None if salt_hex is None else parse_hex_bytes(salt_hex, label="HKDF salt")
+        return X25519ExchangeView(
+            perform_x25519_exchange(
+                alice_private_key=alice_private,
+                bob_private_key=bob_private,
+                salt=salt,
+                info=info_text.encode("utf-8", errors="strict"),
+                derived_key_length=length,
+            )
+        )
+
+    _run(context, factory)
+
+
+@ed25519_app.command("generate")
+def ed25519_generate_command(
+    context: typer.Context,
+    private_key_out: Annotated[
+        Path,
+        typer.Option("--private-key-out", help="Write unencrypted PKCS#8 PEM here."),
+    ],
+    public_key_out: Annotated[
+        Path,
+        typer.Option("--public-key-out", help="Write SubjectPublicKeyInfo PEM here."),
+    ],
+    overwrite: Annotated[
+        bool,
+        typer.Option("--overwrite", help="Replace existing output files explicitly."),
+    ] = False,
+) -> None:
+    """Generate and serialize one Ed25519 key pair."""
+
+    def factory() -> CurveKeyGenerationView:
+        _validate_output_paths(private_key_out, public_key_out, overwrite=overwrite)
+        result = generate_ed25519_key_pair()
+        _write_atomic_bytes(private_key_out, result.private_pem, mode=0o600)
+        _write_atomic_bytes(public_key_out, result.public_pem, mode=0o644)
+        return CurveKeyGenerationView(result, str(private_key_out), str(public_key_out))
+
+    _run(context, factory)
+
+
+@ed25519_app.command("sign")
+def ed25519_sign_command(
+    context: typer.Context,
+    private_key_file: Annotated[
+        Path | None,
+        typer.Option("--private-key-file", help="Ed25519 PKCS#8 PEM private key."),
+    ] = None,
+    private_key_hex: Annotated[
+        str | None,
+        typer.Option("--private-key-hex", help="Raw 32-byte RFC 8032 private seed."),
+    ] = None,
+    message_text: Annotated[
+        str | None,
+        typer.Option("--message-text", help="Message encoded strictly as UTF-8."),
+    ] = None,
+    message_hex: Annotated[
+        str | None,
+        typer.Option("--message-hex", help="Message canonical hexadecimal bytes."),
+    ] = None,
+    message_file: Annotated[
+        Path | None,
+        typer.Option("--message-file", help="Read message bytes from a file."),
+    ] = None,
+) -> None:
+    """Create a pure Ed25519 signature."""
+
+    def factory() -> Ed25519SignatureView:
+        private_key = _load_ed25519_private_source(
+            key_file=private_key_file, key_hex=private_key_hex
+        )
+        message = read_byte_source(
+            label="message",
+            text=message_text,
+            hex_value=message_hex,
+            file=message_file,
+        )
+        return Ed25519SignatureView(ed25519_sign(private_key, message.data), message.source_kind)
+
+    _run(context, factory)
+
+
+@ed25519_app.command("verify")
+def ed25519_verify_command(
+    context: typer.Context,
+    public_key_file: Annotated[
+        Path | None,
+        typer.Option("--public-key-file", help="Ed25519 SubjectPublicKeyInfo PEM key."),
+    ] = None,
+    public_key_hex: Annotated[
+        str | None,
+        typer.Option("--public-key-hex", help="Raw 32-byte Ed25519 public key."),
+    ] = None,
+    signature_hex: Annotated[
+        str | None,
+        typer.Option("--signature-hex", help="Signature canonical hexadecimal bytes."),
+    ] = None,
+    signature_file: Annotated[
+        Path | None,
+        typer.Option("--signature-file", help="Read signature bytes from a file."),
+    ] = None,
+    message_text: Annotated[
+        str | None,
+        typer.Option("--message-text", help="Message encoded strictly as UTF-8."),
+    ] = None,
+    message_hex: Annotated[
+        str | None,
+        typer.Option("--message-hex", help="Message canonical hexadecimal bytes."),
+    ] = None,
+    message_file: Annotated[
+        Path | None,
+        typer.Option("--message-file", help="Read message bytes from a file."),
+    ] = None,
+) -> None:
+    """Verify a pure Ed25519 signature."""
+
+    def factory() -> Ed25519VerificationView:
+        public_key = _load_ed25519_public_source(key_file=public_key_file, key_hex=public_key_hex)
+        signature = _read_hex_or_file(
+            label="signature", hex_value=signature_hex, file=signature_file
+        )
+        message = read_byte_source(
+            label="message",
+            text=message_text,
+            hex_value=message_hex,
+            file=message_file,
+        )
+        result = ed25519_verify(public_key, message.data, signature.data)
+        if not result.valid:
+            raise VerificationError("Ed25519 signature verification failed.")
+        return Ed25519VerificationView(result)
+
+    _run(context, factory)
+
+
+@app.command("compare-key-agreement")
+def compare_key_agreement_command(context: typer.Context) -> None:
+    """Compare educational finite-field Diffie-Hellman with X25519."""
+
+    _run(context, lambda: KeyAgreementComparisonView(key_agreement_profiles()))
+
+
+@app.command("compare-signatures")
+def compare_signatures_command(context: typer.Context) -> None:
+    """Compare RSA-PSS, Ed25519, and HMAC-SHA-256."""
+
+    _run(context, lambda: SignatureComparisonView(signature_profiles()))
+
+
 @rsa_app.command("compare")
 def rsa_compare_command(context: typer.Context) -> None:
     """Compare textbook RSA, RSA-OAEP, and RSA-PSS by purpose and limitations."""
@@ -492,5 +906,8 @@ rsa_app.add_typer(convert_app, name="convert")
 rsa_app.add_typer(applied_app, name="applied")
 app.add_typer(rsa_app, name="rsa")
 app.add_typer(dh_app, name="dh")
+app.add_typer(ecc_app, name="ecc")
+app.add_typer(x25519_app, name="x25519")
+app.add_typer(ed25519_app, name="ed25519")
 
 __all__ = ["app"]

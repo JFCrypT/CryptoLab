@@ -67,6 +67,10 @@ nav:
       - Applied RSA-OAEP and RSA-PSS: public-key/applied-rsa.md
       - RSA construction comparison: public-key/rsa-comparisons.md
       - Educational finite-field Diffie-Hellman: public-key/finite-field-diffie-hellman.md
+      - Educational elliptic curves: public-key/educational-elliptic-curves.md
+      - X25519 key agreement: public-key/x25519.md
+      - Ed25519 digital signatures: public-key/ed25519.md
+      - Modern curve comparisons: public-key/modern-curve-comparisons.md
   - Pseudorandom sequences:
       - Linear Feedback Shift Registers: sequences/lfsr.md
       - Elementary sequence analysis: sequences/analysis.md
@@ -85,5 +89,6 @@ nav:
       - Hashing, HMAC, and HKDF conventions: decisions/0007-hashing-hmac-hkdf-conventions.md
       - RSA conventions: decisions/0008-rsa-conventions.md
       - Finite-field DH and MITM conventions: decisions/0009-finite-field-dh-and-mitm-conventions.md
+      - Elliptic curves, X25519, and Ed25519 conventions: decisions/0010-elliptic-curves-x25519-ed25519-conventions.md
   - Roadmap to 1.0.0: roadmap.md
   - References: references.md

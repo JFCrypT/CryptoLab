@@ -49,6 +49,12 @@ The implemented foundation currently provides:
   computation, HKDF-SHA-256 derivation, and explicit key-agreement limitations;
 - the controlled unauthenticated Diffie-Hellman man-in-the-middle laboratory, completing
   the four approved local laboratories;
+- educational elliptic-curve point enumeration, infinity, negation, addition, doubling,
+  scalar multiplication, point orders, and generated subgroups over tiny prime fields;
+- library-backed X25519 key generation and HKDF-SHA-256 key derivation with RFC 7748
+  validation;
+- library-backed Ed25519 deterministic signing and verification with RFC 8032 validation;
+- finite-field DH versus X25519 and RSA-PSS versus Ed25519 versus HMAC comparisons;
 - human, JSON, and LaTeX interfaces with automated validation.
 
 These are internal development milestones only. They do not constitute a public pre-release.

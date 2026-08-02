@@ -81,6 +81,16 @@ pre-release is planned.
 - The fourth controlled laboratory: unauthenticated Diffie-Hellman man-in-the-middle with
   substituted public values, two attacker-known channel keys, documentation, tests, and an
   architecture decision record.
+- Educational short-Weierstrass elliptic-curve arithmetic over bounded prime fields,
+  including non-singularity checks, point enumeration, infinity, negation, addition,
+  doubling, double-and-add scalar multiplication, point orders, and generated subgroups.
+- Library-backed X25519 key generation, PKCS#8/SubjectPublicKeyInfo serialization, RFC 7748
+  vector validation, bilateral shared-secret computation, all-zero rejection, and
+  HKDF-SHA-256 derivation.
+- Library-backed Ed25519 key generation, RFC 8032 vector validation, deterministic signing,
+  verification, and invalid-signature handling.
+- Contextual finite-field Diffie-Hellman versus X25519 and RSA-PSS versus Ed25519 versus
+  HMAC-SHA-256 comparisons, documentation, tests, and an architecture decision record.
 
 ### Fixed
 

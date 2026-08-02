@@ -208,6 +208,13 @@ The implemented mathematical foundation currently includes:
   validation, public-value orders, shared-secret computation, and HKDF-SHA-256 derivation;
 - the controlled unauthenticated Diffie-Hellman man-in-the-middle laboratory, completing
   the exact four-laboratory registry;
+- educational short-Weierstrass elliptic curves over tiny prime fields with point
+  enumeration, infinity, negation, addition, doubling, scalar multiplication, point order,
+  and generated subgroups;
+- library-backed X25519 key generation, two-party shared-secret computation,
+  all-zero rejection, HKDF-SHA-256 derivation, and finite-field DH comparison;
+- library-backed Ed25519 key generation, deterministic signing, verification, and
+  RSA-PSS/HMAC comparison;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
@@ -423,6 +430,34 @@ Inspect educational finite-field Diffie-Hellman and derive a session key:
 ```bash
 uv run cryptolab --explain public-key dh group 17 3
 uv run cryptolab --explain public-key dh exchange 17 3 13 11
+```
+
+Inspect educational elliptic-curve arithmetic:
+
+```bash
+uv run cryptolab --explain public-key ecc inspect 17 2 2
+uv run cryptolab --explain public-key ecc add 17 2 2 5:1 5:1
+uv run cryptolab --explain public-key ecc multiply 17 2 2 3 5:1
+uv run cryptolab --explain public-key ecc subgroup 17 2 2 5:1
+```
+
+Generate X25519 and Ed25519 keys and inspect the required comparisons:
+
+```bash
+uv run cryptolab public-key x25519 generate \
+  --private-key-out x25519-private.pem \
+  --public-key-out x25519-public.pem
+
+uv run cryptolab public-key ed25519 generate \
+  --private-key-out ed25519-private.pem \
+  --public-key-out ed25519-public.pem
+
+uv run cryptolab public-key ed25519 sign \
+  --private-key-file ed25519-private.pem \
+  --message-text "CryptoLab"
+
+uv run cryptolab --explain public-key compare-key-agreement
+uv run cryptolab --explain public-key compare-signatures
 ```
 
 Run the implemented controlled laboratories:
