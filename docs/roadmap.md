@@ -1,7 +1,7 @@
-# Roadmap to version 1.0.0
+# Release status and future scope
 
-CryptoLab has one initial public release: version 1.0.0. The roadmap below describes
-internal implementation order only and does not define pre-releases.
+CryptoLab has one initial public release: version 1.0.0. The milestones below describe the
+internal implementation order only and do not define pre-releases.
 
 1. **Completed:** repository, architecture, conventions, and integer arithmetic.
 2. **Completed:** linear Diophantine equations and modular arithmetic.
@@ -17,8 +17,10 @@ internal implementation order only and does not define pre-releases.
 8. **Completed:** finite-field Diffie-Hellman and the controlled MITM laboratory.
 9. **Completed:** educational elliptic-curve arithmetic, X25519, Ed25519, key-agreement
    comparison, and signature-versus-MAC comparison.
-10. **Next:** required comparison consolidation, optional SageMath cross-validation,
-   documentation consolidation, and release hardening.
+10. **Completed:** comparison consolidation, optional dynamic SageMath cross-validation,
+    traceability, documentation consolidation, distribution checks, and release hardening.
 
-The `v1.0.0` tag is created only after the complete approved scope satisfies the release
-acceptance criteria.
+The `v1.0.0` tag is created only after the complete acceptance sequence passes on the final
+commit. Future additions require explicit approval and must preserve the limited didactic
+scope. No additional primitive, attack laboratory, network service, GUI, web application,
+PQC module, or production security subsystem is implicitly planned.

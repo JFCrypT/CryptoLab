@@ -11,8 +11,16 @@ Alphabet symbols are data and may contain non-English characters.
 
 ## Development setup
 
+Contributors must have:
+
+- Python 3.12, 3.13, or 3.14;
+- uv.
+
+SageMath is optional. It is used only for explicit direct cross-validation and remains outside
+the normal wheel dependencies.
+
 ```bash
-uv sync
+uv sync --locked
 # Required only when working from a source archive rather than a clone.
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || git init -b main
 uv run pre-commit install
@@ -27,7 +35,24 @@ uv run mypy
 uv run pytest
 uv run mkdocs build --strict
 uv build --no-sources
+uv run python scripts/check_release.py --dist-dir dist
 ```
+
+These checks do not require SageMath.
+
+## Optional SageMath cross-validation
+
+When `sage` is available, one supported calculation can be compared directly:
+
+```bash
+source /home/jfcrypt/miniforge3/bin/activate sage
+
+uv run python scripts/cross_validate.py -- \
+  modular inverse 13 200
+```
+
+The coordinator executes CryptoLab and `sagemath/compute_reference.py`, then compares both
+results. Contributors do not write SageMath code for each execution.
 
 ## Scope control
 

@@ -8,12 +8,11 @@ CryptoLab is designed to demonstrate knowledge of theoretical and applied crypto
 without becoming a complete cryptographic suite, a production cryptographic library, or a
 general-purpose security product.
 
-> **Development status**
+> **Release model**
 >
-> CryptoLab is being developed toward a single initial public release: **version 1.0.0**.
-> No public pre-release is planned. The repository may contain incomplete work before the
-> `v1.0.0` tag exists. The package metadata uses the target version number, but the release
-> is not considered available until the acceptance criteria are met and the tag is created.
+> CryptoLab uses one initial public release: **version 1.0.0**. No public pre-release is
+> planned. Git history before the `v1.0.0` tag is development history; the validated tag and
+> its distributions define the public release.
 
 ## Project actions
 
@@ -133,7 +132,7 @@ intentionally vulnerable local examples.
 - unit, integration, round-trip, boundary, invalid-input, and selected property-based tests;
 - mathematical identity verification;
 - selected NIST and RFC test vectors;
-- optional standalone SageMath cross-validation;
+- optional direct SageMath cross-validation for supported educational calculations;
 - comparisons between educational and library-backed code, AES modes, AEAD constructions,
   hash and authentication mechanisms, finite-field and elliptic-curve key agreement, and
   RSA and Ed25519 signatures.
@@ -155,9 +154,9 @@ CryptoLab uses the following fixed conventions:
 
 These conventions must not change silently.
 
-## Current implementation
+## Implemented version 1.0.0 capabilities
 
-The implemented mathematical foundation currently includes:
+The version 1.0.0 implementation includes:
 
 - Euclidean division;
 - divisibility and complete divisor enumeration;
@@ -218,8 +217,8 @@ The implemented mathematical foundation currently includes:
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
-The first public release remains version 1.0.0 and will be created only after the complete
-scope is implemented and validated.
+The complete approved scope is implemented. The public release is created only from the
+validated commit that receives the annotated `v1.0.0` tag.
 
 ## Requirements
 
@@ -228,7 +227,11 @@ scope is implemented and validated.
 - `uv` for dependency management, execution, locking, and builds;
 - the `cryptography` package for modern library-backed primitives.
 
-Python 3.12, 3.13, and 3.14 are the intended CI matrix for version 1.0.0.
+Installing, developing, testing, and releasing CryptoLab do not require SageMath. SageMath
+is available only as an optional direct cross-validation path for selected educational
+calculations. The normal wheel and CLI remain independent of SageMath.
+
+Python 3.12, 3.13, and 3.14 are the intended Python CI matrix for version 1.0.0.
 
 ## Installation for development
 
@@ -520,14 +523,40 @@ uv run mypy
 Run all pre-commit checks:
 
 ```bash
-uv run pre-commit run --all-files
+uv run pre-commit run --all-files --show-diff-on-failure
 ```
 
-Build the wheel and source distribution:
+Run the repository-owned release-readiness checker:
+
+```bash
+uv run python scripts/check_release.py
+```
+
+Build the wheel and source distribution, then validate their contents:
 
 ```bash
 uv build --no-sources
+uv run python scripts/check_release.py --dist-dir dist
 ```
+
+Optionally compare one supported educational calculation with SageMath:
+
+```bash
+source /home/jfcrypt/miniforge3/bin/activate sage
+
+uv run python scripts/cross_validate.py -- \
+  modular inverse 13 200
+```
+
+Without cross-validation, the corresponding normal CLI command is:
+
+```bash
+uv run cryptolab modular inverse 13 200
+```
+
+The user supplies the operation and parameters once. The coordinator executes the real
+CryptoLab CLI, runs `sagemath/compute_reference.py` with the same normalized inputs, and
+compares both results. Use `--list-supported` to inspect the current mappings.
 
 Build the documentation strictly:
 
@@ -539,7 +568,18 @@ uv run mkdocs build --strict
 
 `README.md` is the complete self-contained entry point for the repository. The `docs/`
 directory provides the detailed mathematical, cryptographic, laboratory, comparison, and
-validation manual through MkDocs.
+validation manual through MkDocs. The consolidated release pages are:
+
+- [`docs/foundations/cryptographic-foundations.md`](docs/foundations/cryptographic-foundations.md);
+- [`docs/comparisons/required-comparisons.md`](docs/comparisons/required-comparisons.md);
+- [`docs/validation/release-traceability.md`](docs/validation/release-traceability.md);
+- [`docs/validation/release-acceptance.md`](docs/validation/release-acceptance.md);
+- [`docs/release-process.md`](docs/release-process.md).
+
+Optional direct SageMath cross-validation is documented in
+[`docs/validation/sagemath-cross-validation.md`](docs/validation/sagemath-cross-validation.md)
+and [`sagemath/README.md`](sagemath/README.md). SageMath remains isolated from the normal
+runtime package and does not block mandatory CI or release acceptance.
 
 Publishing the generated static documentation through GitHub Pages is optional. CryptoLab
 itself is not a web application and no cryptographic operation is executed remotely.

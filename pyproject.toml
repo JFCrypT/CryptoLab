@@ -29,7 +29,9 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Topic :: Education",
   "Topic :: Security :: Cryptography",
+  "Typing :: Typed",
 ]
 dependencies = [
   "cryptography>=46.0.0,<50.0.0",
@@ -41,9 +43,12 @@ dependencies = [
 cryptolab = "cryptolab.cli.app:main"
 
 [project.urls]
+Homepage = "https://github.com/JFCrypT/CryptoLab"
 Repository = "https://github.com/JFCrypT/CryptoLab"
 Documentation = "https://github.com/JFCrypT/CryptoLab/tree/main/docs"
+Changelog = "https://github.com/JFCrypT/CryptoLab/blob/main/CHANGELOG.md"
 Issues = "https://github.com/JFCrypT/CryptoLab/issues"
+Security = "https://github.com/JFCrypT/CryptoLab/security/policy"
 
 [dependency-groups]
 dev = [
@@ -73,6 +78,9 @@ source-include = [
   "CODE_OF_CONDUCT.md",
   "CONTRIBUTING.md",
   "SECURITY.md",
+  "sagemath/**",
+  "scripts/**",
+  "tests/**",
 ]
 
 [tool.ruff]
@@ -127,6 +135,8 @@ ignore = [
 "src/cryptolab/cli/**/*.py" = ["FBT", "PLR0917", "TC003"]
 "src/cryptolab/rendering/**/*.py" = ["TC001", "TC002"]
 "tests/**/*.py" = ["ARG", "FBT", "PLR2004", "S101", "TC002", "TC003"]
+"scripts/**/*.py" = ["C901", "INP001", "PLR0912", "PLR0915", "PLR2004", "T201"]
+"sagemath/**/*.py" = ["INP001", "PLR2004", "T201"]
 
 [tool.ruff.format]
 quote-style = "double"

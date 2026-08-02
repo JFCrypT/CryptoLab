@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  merge_group:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -31,6 +33,8 @@ jobs:
         run: uv run ruff format --check .
       - name: mypy
         run: uv run mypy
+      - name: Compile Python sources
+        run: uv run python -m compileall -q src tests scripts sagemath
       - name: MkDocs strict build
         run: uv run mkdocs build --strict
 
@@ -67,6 +71,8 @@ jobs:
           python-version: "3.12"
       - name: Set up uv
         uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
+      - name: Synchronize dependencies
+        run: uv sync --frozen
       - name: Build distributions
         run: uv build --no-sources
       - name: Test wheel installation
@@ -74,4 +80,33 @@ jobs:
         run: |
           python -m venv wheel-test
           wheel-test/bin/python -m pip install dist/*.whl
-          wheel-test/bin/cryptolab --help
+          wheel-test/bin/cryptolab --version
+          wheel-test/bin/cryptolab hashing digest sha256 --message-text abc
+          wheel-test/bin/cryptolab public-key ecc multiply 17 2 2 3 5:1
+
+  release-readiness:
+    name: release-readiness
+    runs-on: ubuntu-latest
+    needs: [quality, tests, package]
+    if: ${{ always() }}
+    steps:
+      - name: Require prerequisite jobs
+        shell: bash
+        run: |
+          test "${{ needs.quality.result }}" = "success"
+          test "${{ needs.tests.result }}" = "success"
+          test "${{ needs.package.result }}" = "success"
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.12"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
+      - name: Synchronize dependencies
+        run: uv sync --frozen
+      - name: Build release distributions
+        run: uv build --no-sources
+      - name: Run release checker
+        run: uv run python scripts/check_release.py --dist-dir dist

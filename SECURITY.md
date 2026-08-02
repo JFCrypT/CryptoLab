@@ -8,8 +8,10 @@ established cryptographic software.
 
 ## Supported release
 
-The first supported public release will be version 1.0.0. Until the `v1.0.0` tag exists,
-the repository is development code and no public release is supported.
+| Version | Supported |
+|---|---|
+| 1.0.x | Yes, after the `v1.0.0` public release tag |
+| Development history before `v1.0.0` | No public release support |
 
 ## Security limitations
 
@@ -29,7 +31,7 @@ when available.
 
 A useful report includes:
 
-- affected command, module, and commit;
+- affected command, module, version, and commit;
 - expected and observed behavior;
 - reproduction steps using project-generated or non-sensitive data;
 - security impact;

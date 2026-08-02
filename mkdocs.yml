@@ -41,6 +41,7 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - Foundations:
+      - Cryptographic foundations: foundations/cryptographic-foundations.md
       - Implementation categories: foundations/implementation-categories.md
       - Validation model: foundations/validation-model.md
   - Mathematics:
@@ -74,6 +75,12 @@ nav:
   - Pseudorandom sequences:
       - Linear Feedback Shift Registers: sequences/lfsr.md
       - Elementary sequence analysis: sequences/analysis.md
+  - Required comparisons: comparisons/required-comparisons.md
+  - Validation and release:
+      - Release traceability: validation/release-traceability.md
+      - Release acceptance: validation/release-acceptance.md
+      - Optional SageMath cross-validation: validation/sagemath-cross-validation.md
+      - Release process: release-process.md
   - Controlled laboratories:
       - Caesar brute force: laboratories/caesar-brute-force.md
       - Vernam key reuse: laboratories/vernam-key-reuse.md
@@ -90,5 +97,6 @@ nav:
       - RSA conventions: decisions/0008-rsa-conventions.md
       - Finite-field DH and MITM conventions: decisions/0009-finite-field-dh-and-mitm-conventions.md
       - Elliptic curves, X25519, and Ed25519 conventions: decisions/0010-elliptic-curves-x25519-ed25519-conventions.md
-  - Roadmap to 1.0.0: roadmap.md
+      - Release hardening and cross-validation: decisions/0011-release-hardening-and-cross-validation.md
+  - Release status and future scope: roadmap.md
   - References: references.md

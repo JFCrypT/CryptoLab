@@ -6,8 +6,10 @@ authors:
   - family-names: "Castro Tramontina"
     given-names: "José Federico"
 repository-code: "https://github.com/JFCrypT/CryptoLab"
+url: "https://github.com/JFCrypT/CryptoLab"
 license: MIT
 version: 1.0.0
+date-released: 2026-08-02
 keywords:
   - cryptography
   - number theory

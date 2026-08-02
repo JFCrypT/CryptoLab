@@ -2,10 +2,14 @@
 
 All notable changes to CryptoLab will be documented in this file.
 
-The project is being developed toward one initial public release, version 1.0.0. No public
-pre-release is planned.
+CryptoLab uses one initial public release, version 1.0.0. No public pre-release is
+planned.
 
-## Unreleased
+## [Unreleased]
+
+No changes are documented after version 1.0.0.
+
+## [1.0.0] - 2026-08-02
 
 ### Added
 
@@ -91,6 +95,15 @@ pre-release is planned.
   verification, and invalid-signature handling.
 - Contextual finite-field Diffie-Hellman versus X25519 and RSA-PSS versus Ed25519 versus
   HMAC-SHA-256 comparisons, documentation, tests, and an architecture decision record.
+- Consolidated cryptographic terminology, security-service distinctions, and every required
+  version 1.0.0 comparison.
+- Release traceability, release acceptance criteria, and a documented manual release process.
+- A repository-owned release checker covering metadata, scope guardrails, required files,
+  wheel contents, source-distribution contents, and secret-file exclusions.
+- Optional dynamic direct SageMath cross-validation for selected educational operations,
+  isolated from the normal runtime package and mandatory release path.
+- Release-hardening tests and CI checks for metadata, distribution contents, and isolated
+  wheel execution.
 
 ### Fixed
 
@@ -98,3 +111,6 @@ pre-release is planned.
 - Removed the deprecated license classifier while retaining PEP 639 license metadata.
 - Clarified that pre-commit hook installation requires an initialized Git repository.
 - Finalized type-only imports and dataclass narrowing for clean Ruff and mypy checks.
+
+[Unreleased]: https://github.com/JFCrypT/CryptoLab/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/JFCrypT/CryptoLab/releases/tag/v1.0.0

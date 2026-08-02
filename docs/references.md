@@ -79,3 +79,16 @@ formal verification, or an independent audit.
 
 The educational curves in CryptoLab are independent teaching examples. RFC vectors validate
 library interoperability; they do not certify CryptoLab or establish production readiness.
+
+## Validation, packaging, and mandatory release cross-validation
+
+- SageMath documentation for integer rings, modular rings, CRT, multiplicative order, and
+  elliptic curves used by the mandatory independent release cross-validation script.
+- Python Packaging User Guide and PEP 639 for package metadata, source distributions,
+  wheels, and license metadata.
+- Citation File Format 1.2.0 for `CITATION.cff` metadata.
+- GitHub Actions and uv documentation for reproducible CI setup and locked dependency
+  synchronization.
+
+These tools validate reproducibility and packaging behavior. They do not certify the
+cryptographic security of CryptoLab.
