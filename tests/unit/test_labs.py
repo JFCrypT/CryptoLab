@@ -17,7 +17,7 @@ def test_lab_registry_contains_exactly_four_approved_labs() -> None:
         "implemented",
         "implemented",
         "implemented",
-        "planned",
+        "implemented",
     ]
 
 

@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from cryptolab.labs.caesar_brute_force import CaesarBruteForceLabResult
+from cryptolab.labs.dh_man_in_the_middle import DHManInTheMiddleResult
 from cryptolab.labs.ecb_pattern_leakage import ECBPatternLeakageResult
 from cryptolab.labs.models import LabDescriptor
 from cryptolab.labs.vernam_key_reuse import VernamKeyReuseLabResult
@@ -224,4 +225,95 @@ class ECBPatternLeakageLabView:
         lines = [rf"\begin{{array}}{{rll}}i&P_i&C_i\\{rows}\end{{array}}"]
         if explain:
             lines.append(r"P_i=P_j\Longrightarrow C_i=C_j\quad\text{under ECB and one key}")
+        return "\\\n".join(lines)
+
+
+@dataclass(frozen=True, slots=True)
+class DHManInTheMiddleLabView:
+    """Render the unauthenticated Diffie-Hellman man-in-the-middle laboratory."""
+
+    result: DHManInTheMiddleResult
+
+    def render_human(self, console: Console, *, explain: bool) -> None:
+        honest = Table("Honest value", "Result")
+        honest.add_row("Alice public A", str(self.result.alice_public))
+        honest.add_row("Bob public B", str(self.result.bob_public))
+        honest.add_row("Honest shared secret", str(self.result.honest_shared_secret))
+        console.print(honest)
+
+        attack = Table("Channel", "Received public value", "Endpoint secret", "Mallory secret")
+        attack.add_row(
+            "Alice <-> Mallory",
+            str(self.result.mallory_public_to_alice),
+            str(self.result.alice_channel_secret),
+            str(self.result.mallory_alice_secret),
+        )
+        attack.add_row(
+            "Mallory <-> Bob",
+            str(self.result.mallory_public_to_bob),
+            str(self.result.bob_channel_secret),
+            str(self.result.mallory_bob_secret),
+        )
+        console.print(attack)
+        console.print(f"Mallory matches Alice: {self.result.alice_channel_matches}")
+        console.print(f"Mallory matches Bob: {self.result.bob_channel_matches}")
+        console.print(
+            f"Alice and Bob now have different secrets: {self.result.alice_bob_secrets_differ}"
+        )
+        if explain:
+            console.print(f"Alice-channel HKDF key: {self.result.alice_channel_key_hex}")
+            console.print(f"Mallory copy for Alice: {self.result.mallory_alice_key_hex}")
+            console.print(f"Bob-channel HKDF key: {self.result.bob_channel_key_hex}")
+            console.print(f"Mallory copy for Bob: {self.result.mallory_bob_key_hex}")
+            console.print(f"Violated assumption: {self.result.violated_assumption}")
+            console.print(f"Security effect: {self.result.security_effect}")
+            console.print(f"Mitigation: {self.result.mitigation}")
+
+    def render_json(self, *, explain: bool) -> dict[str, Any]:
+        return {
+            "schema_version": "1.0",
+            "command": "lab.dh-man-in-the-middle",
+            "implementation": "controlled-laboratory",
+            "inputs": {
+                "prime": self.result.prime,
+                "generator": self.result.generator,
+                "alice_private": self.result.alice_private,
+                "bob_private": self.result.bob_private,
+                "mallory_alice_private": self.result.mallory_alice_private,
+                "mallory_bob_private": self.result.mallory_bob_private,
+            },
+            "result": {
+                "alice_public": self.result.alice_public,
+                "bob_public": self.result.bob_public,
+                "honest_shared_secret": self.result.honest_shared_secret,
+                "mallory_public_to_alice": self.result.mallory_public_to_alice,
+                "mallory_public_to_bob": self.result.mallory_public_to_bob,
+                "alice_channel_secret": self.result.alice_channel_secret,
+                "mallory_alice_secret": self.result.mallory_alice_secret,
+                "bob_channel_secret": self.result.bob_channel_secret,
+                "mallory_bob_secret": self.result.mallory_bob_secret,
+                "alice_channel_matches": self.result.alice_channel_matches,
+                "bob_channel_matches": self.result.bob_channel_matches,
+                "alice_bob_secrets_differ": self.result.alice_bob_secrets_differ,
+                "alice_channel_key_hex": self.result.alice_channel_key_hex,
+                "mallory_alice_key_hex": self.result.mallory_alice_key_hex,
+                "bob_channel_key_hex": self.result.bob_channel_key_hex,
+                "mallory_bob_key_hex": self.result.mallory_bob_key_hex,
+                "violated_assumption": self.result.violated_assumption,
+                "security_effect": self.result.security_effect,
+                "mitigation": self.result.mitigation,
+            },
+            "trace": [],
+            "warnings": ["This laboratory uses deliberately vulnerable local parameters."],
+            "explanation_included": explain,
+        }
+
+    def render_latex(self, *, explain: bool) -> str:
+        lines = [
+            rf"K_{{A,M}}={self.result.alice_channel_secret}=K_{{M,A}}",
+            rf"K_{{B,M}}={self.result.bob_channel_secret}=K_{{M,B}}",
+            r"K_{A,M}\ne K_{B,M}",
+        ]
+        if explain:
+            lines.append(r"\text{The exchanged public values were not authenticated.}")
         return "\\\n".join(lines)

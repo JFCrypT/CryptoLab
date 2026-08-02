@@ -65,6 +65,22 @@ pre-release is planned.
 - Staged HKDF-SHA-256 extraction and expansion, PRK and OKM inspection, omitted-salt
   handling, output-length enforcement, and RFC 5869 vectors.
 - Hashing, HMAC, and HKDF documentation plus architecture decision record.
+- Educational textbook RSA key construction from manual or generated small primes, including
+  Euler totient, Carmichael function, Euler- and Carmichael-based private exponents, CRT
+  parameters, modular-exponentiation traces, and direct/CRT decryption cross-checks.
+- Unsigned big-endian integer-to-bytes and bytes-to-integer conversion commands.
+- Library-backed RSA key generation and local PKCS#8/SubjectPublicKeyInfo PEM serialization.
+- RSA-OAEP encryption and decryption with SHA-256, MGF1-SHA-256, explicit message-size
+  limits, and generic decoding failure handling.
+- RSA-PSS signing and verification with SHA-256, MGF1-SHA-256, and a fixed 32-byte salt.
+- Contextual comparison of textbook RSA, RSA-OAEP, and RSA-PSS plus hybrid-encryption
+  explanation, documentation, tests, and architecture decision record.
+- Educational finite-field Diffie-Hellman over bounded prime fields with generator
+  validation, element-order inspection, modular-exponentiation traces, shared-secret
+  verification, and HKDF-SHA-256 session-key derivation.
+- The fourth controlled laboratory: unauthenticated Diffie-Hellman man-in-the-middle with
+  substituted public values, two attacker-known channel keys, documentation, tests, and an
+  architecture decision record.
 
 ### Fixed
 

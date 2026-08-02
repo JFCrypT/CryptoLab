@@ -12,9 +12,10 @@ internal implementation order only and does not define pre-releases.
    ChaCha20-Poly1305, mode comparisons, and the ECB pattern-leakage laboratory.
 6. **Completed:** SHA-256, SHA3-256, HMAC-SHA-256, HKDF-SHA-256, file hashing,
    digest comparison, hash-versus-MAC comparison, and avalanche visualization.
-7. **Next:** educational and applied RSA.
-8. Finite-field Diffie-Hellman and the controlled MITM laboratory.
-9. Educational elliptic-curve arithmetic, X25519, and Ed25519.
+7. **Completed:** educational textbook RSA, RSA-OAEP, RSA-PSS, key serialization,
+   RSA comparisons, and hybrid-encryption explanation.
+8. **Completed:** finite-field Diffie-Hellman and the controlled MITM laboratory.
+9. **Next:** educational elliptic-curve arithmetic, X25519, and Ed25519.
 10. Required comparison consolidation, optional SageMath cross-validation, documentation
    consolidation, and release hardening.
 

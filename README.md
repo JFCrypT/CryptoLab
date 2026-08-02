@@ -196,6 +196,18 @@ The implemented mathematical foundation currently includes:
 - HMAC-SHA-256 generation and constant-time verification plus hash-versus-MAC comparison;
 - staged HKDF-SHA-256 extraction and expansion with PRK, info, OKM, RFC vectors, and a
   complete-derivation cross-check;
+- educational textbook RSA with manual or generated small primes, Euler totient,
+  Carmichael function, Euler- and Carmichael-based private exponents, CRT parameters,
+  modular traces, and direct/CRT decryption cross-checks;
+- unsigned big-endian integer/byte conversion for RSA teaching examples;
+- library-backed RSA key generation, PKCS#8 and SubjectPublicKeyInfo PEM serialization,
+  RSA-OAEP encryption/decryption, and RSA-PSS signing/verification;
+- contextual RSA construction, key-direction, message-size, and hybrid-encryption
+  comparisons;
+- educational finite-field Diffie-Hellman over small prime fields, including generator
+  validation, public-value orders, shared-secret computation, and HKDF-SHA-256 derivation;
+- the controlled unauthenticated Diffie-Hellman man-in-the-middle laboratory, completing
+  the exact four-laboratory registry;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
@@ -383,6 +395,36 @@ uv run cryptolab hashing compare-hashes
 uv run cryptolab hashing compare-hash-mac
 ```
 
+Inspect educational RSA and use library-backed RSA:
+
+```bash
+uv run cryptolab --explain public-key rsa educational inspect 61 53 17
+uv run cryptolab public-key rsa educational encrypt 65 --p 61 --q 53 --e 17
+uv run cryptolab --explain public-key rsa educational decrypt 2790 --p 61 --q 53 --e 17
+
+uv run cryptolab public-key rsa applied generate \
+  --key-size 2048 \
+  --private-key-out private.pem \
+  --public-key-out public.pem
+
+uv run cryptolab public-key rsa applied oaep-encrypt \
+  --public-key-file public.pem \
+  --plaintext-text "session key material"
+
+uv run cryptolab public-key rsa applied pss-sign \
+  --private-key-file private.pem \
+  --message-text "CryptoLab"
+
+uv run cryptolab --explain public-key rsa compare
+```
+
+Inspect educational finite-field Diffie-Hellman and derive a session key:
+
+```bash
+uv run cryptolab --explain public-key dh group 17 3
+uv run cryptolab --explain public-key dh exchange 17 3 13 11
+```
+
 Run the implemented controlled laboratories:
 
 ```bash
@@ -395,6 +437,11 @@ uv run cryptolab --explain lab ecb-pattern-leakage \
   --key-hex 000102030405060708090a0b0c0d0e0f \
   --plaintext-hex \
 00112233445566778899aabbccddeeff0000000000000000000000000000000000112233445566778899aabbccddeeff
+
+uv run cryptolab --explain lab dh-man-in-the-middle \
+  17 3 13 11 \
+  --mallory-alice-private 5 \
+  --mallory-bob-private 7
 ```
 
 ## Output formats

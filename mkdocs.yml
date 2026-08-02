@@ -62,6 +62,11 @@ nav:
       - SHA-256 and SHA3-256: hashing/sha2-sha3.md
       - HMAC-SHA-256: hashing/hmac.md
       - HKDF-SHA-256: hashing/hkdf.md
+  - Public-key cryptography:
+      - Educational textbook RSA: public-key/educational-rsa.md
+      - Applied RSA-OAEP and RSA-PSS: public-key/applied-rsa.md
+      - RSA construction comparison: public-key/rsa-comparisons.md
+      - Educational finite-field Diffie-Hellman: public-key/finite-field-diffie-hellman.md
   - Pseudorandom sequences:
       - Linear Feedback Shift Registers: sequences/lfsr.md
       - Elementary sequence analysis: sequences/analysis.md
@@ -69,6 +74,7 @@ nav:
       - Caesar brute force: laboratories/caesar-brute-force.md
       - Vernam key reuse: laboratories/vernam-key-reuse.md
       - ECB pattern leakage: laboratories/ecb-pattern-leakage.md
+      - Diffie-Hellman man-in-the-middle: laboratories/dh-man-in-the-middle.md
   - Architecture decisions:
       - Foundational architecture: decisions/0001-foundational-architecture.md
       - Mathematical conventions: decisions/0002-mathematical-conventions.md
@@ -77,5 +83,7 @@ nav:
       - XOR, Vernam, LFSR, and laboratory conventions: decisions/0005-xor-vernam-lfsr-and-laboratory-conventions.md
       - Modern symmetric conventions: decisions/0006-modern-symmetric-conventions.md
       - Hashing, HMAC, and HKDF conventions: decisions/0007-hashing-hmac-hkdf-conventions.md
+      - RSA conventions: decisions/0008-rsa-conventions.md
+      - Finite-field DH and MITM conventions: decisions/0009-finite-field-dh-and-mitm-conventions.md
   - Roadmap to 1.0.0: roadmap.md
   - References: references.md

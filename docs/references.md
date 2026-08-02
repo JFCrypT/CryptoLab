@@ -44,6 +44,22 @@ modern primitives.
 - Python standard-library documentation for `hashlib` and `hmac`, including
   `hmac.compare_digest`.
 - `cryptography` project documentation for `HKDF` and `HKDFExpand`.
+- RFC 8017, *PKCS #1: RSA Cryptography Specifications Version 2.2*, for RSA primitives,
+  RSAES-OAEP, RSASSA-PSS, MGF1, key representations, and message-length bounds.
+- NIST SP 800-56B Revision 2, *Recommendation for Pair-Wise Key-Establishment Using Integer
+  Factorization Cryptography*, for RSA-based key-establishment context.
+- `cryptography` project documentation for RSA key generation, OAEP, PSS, and key
+  serialization.
 
 Published vectors provide reproducible interoperability checks. They are not certification,
 formal verification, or an independent audit.
+
+## Diffie-Hellman and key agreement
+
+- Whitfield Diffie and Martin E. Hellman, “New Directions in Cryptography,” *IEEE
+  Transactions on Information Theory*, vol. 22, no. 6, 1976.
+- Alfred J. Menezes, Paul C. van Oorschot, and Scott A. Vanstone, *Handbook of Applied
+  Cryptography*, Chapter 12: Key Establishment Protocols and Chapter 3: Number-Theoretic
+  Reference Problems.
+- RFC 5869, *HMAC-based Extract-and-Expand Key Derivation Function (HKDF)*, for the
+  extract-and-expand step applied to the educational shared secret.

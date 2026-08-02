@@ -41,6 +41,14 @@ The implemented foundation currently provides:
 - full digest verification and byte-level avalanche visualization;
 - HMAC-SHA-256 generation and constant-time verification;
 - staged HKDF-SHA-256 extraction, PRK inspection, expansion, OKM generation, and RFC vectors;
+- educational textbook RSA key construction, Euler and Carmichael private exponents, CRT
+  parameters, integer/byte conversion, and direct/CRT decryption cross-checks;
+- library-backed RSA-OAEP, RSA-PSS, RSA key generation, and PEM serialization;
+- RSA purpose, key-direction, message-size, and hybrid-encryption comparisons;
+- educational finite-field Diffie-Hellman with generator validation, shared-secret
+  computation, HKDF-SHA-256 derivation, and explicit key-agreement limitations;
+- the controlled unauthenticated Diffie-Hellman man-in-the-middle laboratory, completing
+  the four approved local laboratories;
 - human, JSON, and LaTeX interfaces with automated validation.
 
 These are internal development milestones only. They do not constitute a public pre-release.

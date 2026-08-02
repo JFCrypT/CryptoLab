@@ -29,6 +29,12 @@ class VerificationError(CryptoLabError):
     exit_code = 4
 
 
+class DecryptionError(CryptoLabError):
+    """Raised when a padded or encoded decryption operation fails."""
+
+    exit_code = 4
+
+
 class MathematicalDomainError(CryptoLabError):
     """Raised when an operation is undefined for the supplied mathematical input."""
 
