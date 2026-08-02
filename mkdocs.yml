@@ -97,6 +97,6 @@ nav:
       - RSA conventions: decisions/0008-rsa-conventions.md
       - Finite-field DH and MITM conventions: decisions/0009-finite-field-dh-and-mitm-conventions.md
       - Elliptic curves, X25519, and Ed25519 conventions: decisions/0010-elliptic-curves-x25519-ed25519-conventions.md
-      - Release hardening and cross-validation: decisions/0011-release-hardening-and-cross-validation.md
+      - Release hardening and optional cross-validation: decisions/0011-release-hardening-and-cross-validation.md
   - Release status and future scope: roadmap.md
   - References: references.md
