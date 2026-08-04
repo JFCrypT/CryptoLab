@@ -8,6 +8,14 @@ CryptoLab is designed to demonstrate knowledge of theoretical and applied crypto
 without becoming a complete cryptographic suite, a production cryptographic library, or a
 general-purpose security product.
 
+<p align="center">
+  <img
+    src="docs/assets/cryptolab-cli-help.jpeg"
+    alt="CryptoLab command-line interface showing the available modules and global options"
+    width="1200"
+  >
+</p>
+
 > **Release model**
 >
 > CryptoLab uses one initial public release: **version 1.0.0**. No public pre-release is
