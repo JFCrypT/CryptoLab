@@ -14,7 +14,8 @@ Alphabet symbols are data and may contain non-English characters.
 Contributors must have:
 
 - Python 3.12, 3.13, or 3.14;
-- uv.
+- uv;
+- OpenSSL 3.5+ when changing standardized post-quantum functionality.
 
 SageMath is optional. It is used only for explicit direct cross-validation and remains outside
 the normal wheel dependencies.
@@ -38,7 +39,7 @@ uv build --no-sources
 uv run python scripts/check_release.py --dist-dir dist
 ```
 
-These checks do not require SageMath.
+These checks do not require SageMath. Standardized PQC integration additionally requires an OpenSSL 3.5+ backend; CI provides a dedicated release-gated native PQC job.
 
 ## Optional SageMath cross-validation
 
@@ -65,6 +66,13 @@ A contribution must not silently add:
 - an alternative mathematical, encoding, LFSR, padding, or byte-order convention.
 
 Scope changes require explicit approval and documentation.
+
+## Post-quantum scope
+
+Post-quantum changes must preserve ADR 0012. ML-KEM, ML-DSA, and SLH-DSA remain
+OpenSSL-backed standardized primitives. Educational ring/LWE examples must remain tiny and
+must not be presented as secure PQC implementations. Adding another PQC algorithm, protocol,
+provider, or attack laboratory requires explicit scope approval.
 
 ## Implementation rules
 

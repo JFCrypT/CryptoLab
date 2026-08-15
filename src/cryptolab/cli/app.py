@@ -15,6 +15,7 @@ from cryptolab.cli.hashing import app as hashing_app
 from cryptolab.cli.integer import app as integer_app
 from cryptolab.cli.labs import app as lab_app
 from cryptolab.cli.modular import app as modular_app
+from cryptolab.cli.post_quantum import app as post_quantum_app
 from cryptolab.cli.public_key import app as public_key_app
 from cryptolab.cli.sequences import app as sequence_app
 from cryptolab.cli.symmetric import app as symmetric_app
@@ -40,6 +41,7 @@ app.add_typer(symmetric_app, name="symmetric")
 app.add_typer(sequence_app, name="sequence")
 app.add_typer(hashing_app, name="hashing")
 app.add_typer(public_key_app, name="public-key")
+app.add_typer(post_quantum_app, name="post-quantum")
 
 
 def version_callback(value: bool) -> None:

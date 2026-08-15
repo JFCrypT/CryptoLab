@@ -1,6 +1,6 @@
 # Release acceptance
 
-Version 1.0.0 is accepted only when every mandatory criterion succeeds on the exact commit
+Version 1.1.0 is accepted only when every mandatory criterion succeeds on the exact commit
 selected for release.
 
 ## Mandatory criteria
@@ -15,10 +15,13 @@ selected for release.
 - the release checker validates metadata, documentation, scope, and archive contents;
 - the wheel installs and executes outside the repository;
 - no private-key or secret-file formats are present in the distributions;
-- the GitHub Actions quality, tests, package, and release-readiness jobs pass;
+- the GitHub Actions quality, tests, package, native PQC, and release-readiness jobs pass;
+- the native PQC job confirms OpenSSL 3.5+ backend readiness and real ML-KEM, ML-DSA, and SLH-DSA workflows;
+- the release checker confirms the pinned user-local PQC backend installer, automatic runtime
+  discovery, and documentation that forbids replacing the operating-system OpenSSL;
 - exactly the four approved controlled laboratories remain implemented.
 
-The mandatory acceptance path does not require SageMath.
+The mandatory acceptance path does not require SageMath. The standardized PQC release gate does require OpenSSL 3.5+ in its dedicated CI environment.
 
 ## Optional direct SageMath evidence
 

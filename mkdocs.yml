@@ -73,6 +73,15 @@ nav:
       - X25519 key agreement: public-key/x25519.md
       - Ed25519 digital signatures: public-key/ed25519.md
       - Modern curve comparisons: public-key/modern-curve-comparisons.md
+  - Post-quantum cryptography:
+      - Overview: post-quantum/overview.md
+      - Isolated OpenSSL PQC backend: post-quantum/backend.md
+      - Quantum threat model: post-quantum/quantum-threat-model.md
+      - Lattice and polynomial foundations: post-quantum/lattice-foundations.md
+      - ML-KEM — FIPS 203: post-quantum/ml-kem.md
+      - ML-DSA — FIPS 204: post-quantum/ml-dsa.md
+      - SLH-DSA — FIPS 205: post-quantum/slh-dsa.md
+      - Classical versus post-quantum: post-quantum/classical-vs-post-quantum.md
   - Pseudorandom sequences:
       - Linear Feedback Shift Registers: sequences/lfsr.md
       - Elementary sequence analysis: sequences/analysis.md
@@ -99,5 +108,6 @@ nav:
       - Finite-field DH and MITM conventions: decisions/0009-finite-field-dh-and-mitm-conventions.md
       - Elliptic curves, X25519, and Ed25519 conventions: decisions/0010-elliptic-curves-x25519-ed25519-conventions.md
       - Release hardening and optional cross-validation: decisions/0011-release-hardening-and-cross-validation.md
+      - Post-quantum conventions: decisions/0012-post-quantum-conventions.md
   - Release status and future scope: roadmap.md
   - References: references.md

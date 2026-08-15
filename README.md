@@ -18,9 +18,10 @@ general-purpose security product.
 
 > **Release model**
 >
-> CryptoLab uses one initial public release: **version 1.0.0**. No public pre-release is
-> planned. Git history before the `v1.0.0` tag is development history; the validated tag and
-> its distributions define the public release.
+> CryptoLab's initial public release is **version 1.0.0**. The current release is
+> **version 1.1.0**, which adds the approved post-quantum cryptography scope without
+> removing or changing the 1.0.0 capabilities. Validated tags and their distributions define
+> public releases.
 
 ## Project actions
 
@@ -70,9 +71,9 @@ Educational code may expose intermediate values and is not necessarily constant-
 suitable for protecting real data. Modern primitives are not reimplemented merely to
 increase repository size.
 
-## Version 1.0.0 scope
+## Version 1.1.0 scope
 
-The complete initial scope includes:
+The complete current scope includes the 1.0.0 baseline plus the approved 1.1.0 post-quantum extension:
 
 ### Cryptographic mathematics
 
@@ -123,9 +124,20 @@ The complete initial scope includes:
 - X25519 with HKDF-based derivation;
 - Ed25519 signing and verification.
 
+
+### Post-quantum cryptography
+
+- ML-KEM (FIPS 203): ML-KEM-512, ML-KEM-768, and ML-KEM-1024;
+- ML-DSA (FIPS 204): ML-DSA-44, ML-DSA-65, and ML-DSA-87;
+- SLH-DSA (FIPS 205): all twelve SHA-2 and SHAKE parameter sets;
+- standardized PQC operations delegated to the OpenSSL 3.5+ EVP provider;
+- bounded educational polynomial-ring and LWE-style calculations;
+- quantum-threat, key-establishment, signature, and classical-versus-post-quantum comparisons;
+- no new controlled attack laboratories.
+
 ### Controlled cryptanalysis laboratories
 
-Version 1.0.0 contains exactly these four laboratories:
+Version 1.1.0 retains exactly these four laboratories from 1.0.0:
 
 1. Caesar brute force;
 2. Vernam key reuse;
@@ -162,9 +174,9 @@ CryptoLab uses the following fixed conventions:
 
 These conventions must not change silently.
 
-## Implemented version 1.0.0 capabilities
+## Implemented version 1.1.0 capabilities
 
-The version 1.0.0 implementation includes:
+The version 1.1.0 implementation includes every 1.0.0 capability plus the approved PQC extension:
 
 - Euclidean division;
 - divisibility and complete divisor enumeration;
@@ -222,30 +234,63 @@ The version 1.0.0 implementation includes:
   all-zero rejection, HKDF-SHA-256 derivation, and finite-field DH comparison;
 - library-backed Ed25519 key generation, deterministic signing, verification, and
   RSA-PSS/HMAC comparison;
+- bounded educational negacyclic polynomial-ring multiplication and tiny LWE-style
+  `b = A*s + e mod q` examples for PQC foundations;
+- library-backed ML-KEM key generation, encapsulation, and decapsulation for all FIPS 203
+  parameter sets with standardized output-length checks;
+- library-backed ML-DSA key generation, pure-message signing, context handling, and
+  verification for all FIPS 204 parameter sets;
+- library-backed SLH-DSA key generation, signing, context handling, and verification for all
+  twelve FIPS 205 parameter sets;
+- OpenSSL 3.5+ PQC backend inspection and alternate executable selection through
+  `CRYPTOLAB_OPENSSL`;
+- key-establishment, signature, and classical-versus-post-quantum comparison tables;
 - human, JSON, and LaTeX output;
 - unit, integration, CLI, and property-based tests for the implemented domain.
 
 The complete approved scope is implemented. The public release is created only from the
-validated commit that receives the annotated `v1.0.0` tag.
+validated commit that receives the annotated `v1.1.0` tag.
 
 ## Requirements
 
 - Linux;
 - Python 3.12 or newer;
 - `uv` for dependency management, execution, locking, and builds;
-- the `cryptography` package for modern library-backed primitives.
+- the `cryptography` package for modern library-backed primitives;
+- OpenSSL 3.5 or newer only for standardized `post-quantum` ML-KEM, ML-DSA, and SLH-DSA
+  commands. CryptoLab can install this backend in an isolated user-local directory without
+  replacing the operating-system OpenSSL.
 
 Installing, developing, testing, and releasing CryptoLab do not require SageMath. SageMath
 is available only as an optional direct cross-validation path for selected educational
 calculations. The normal wheel and CLI remain independent of SageMath.
 
-Python 3.12, 3.13, and 3.14 are the intended Python CI matrix for version 1.0.0.
+Python 3.12, 3.13, and 3.14 are the intended Python CI matrix for version 1.1.0. A dedicated native PQC CI job additionally validates OpenSSL 3.5+ workflows.
 
 ## Installation for development
 
+From a source checkout, the recommended installation is:
+
 ```bash
 cd /home/jfcrypt/Documents/Proyectos/CryptoLab
-uv sync
+./scripts/install.sh
+```
+
+The installer runs `uv sync --locked`, detects a compatible OpenSSL PQC backend, and when
+necessary installs a pinned OpenSSL 3.5 LTS build under
+`~/.local/share/cryptolab/openssl/`. It does not replace `/usr/bin/openssl` or operating-system
+OpenSSL libraries. CryptoLab discovers the sandboxed backend automatically.
+
+To prepare the project without installing the standardized PQC backend:
+
+```bash
+./scripts/install.sh --without-pqc
+```
+
+The isolated backend can also be installed or repaired independently with:
+
+```bash
+./scripts/install_pqc_backend.sh
 ```
 
 Install the pre-commit hooks after the directory is a Git repository. A cloned repository already satisfies this requirement. For a source archive, initialize Git first:
@@ -471,6 +516,37 @@ uv run cryptolab --explain public-key compare-key-agreement
 uv run cryptolab --explain public-key compare-signatures
 ```
 
+
+Use standardized post-quantum cryptography through OpenSSL 3.5+ EVP:
+
+```bash
+uv run cryptolab --explain post-quantum backend
+uv run cryptolab post-quantum ml-kem parameters
+uv run cryptolab post-quantum ml-dsa parameters
+uv run cryptolab post-quantum slh-dsa parameters
+
+uv run cryptolab --explain post-quantum compare-key-establishment
+uv run cryptolab --explain post-quantum compare-signatures
+```
+
+Generate and exercise ML-KEM-768:
+
+```bash
+uv run cryptolab post-quantum ml-kem generate ML-KEM-768 \
+  --private-key-out ml-kem-private.pem \
+  --public-key-out ml-kem-public.pem
+
+uv run cryptolab post-quantum ml-kem encapsulate ML-KEM-768 \
+  --public-key-file ml-kem-public.pem \
+  --ciphertext-out ml-kem-ciphertext.bin \
+  --shared-secret-out alice-secret.bin
+
+uv run cryptolab post-quantum ml-kem decapsulate ML-KEM-768 \
+  --private-key-file ml-kem-private.pem \
+  --ciphertext-file ml-kem-ciphertext.bin \
+  --shared-secret-out bob-secret.bin
+```
+
 Run the implemented controlled laboratories:
 
 ```bash
@@ -547,6 +623,11 @@ uv build --no-sources
 uv run python scripts/check_release.py --dist-dir dist
 ```
 
+The normal test suite keeps backend-independent PQC tests portable. Real standardized PQC
+round trips are additionally release-gated in CI on an OpenSSL 3.5+ runner. Locally, when
+the backend is available, the native standardized PQC integration tests run as part of
+`uv run pytest`.
+
 Optionally compare one supported educational calculation with SageMath:
 
 ```bash
@@ -579,6 +660,7 @@ directory provides the detailed mathematical, cryptographic, laboratory, compari
 validation manual through MkDocs. The consolidated release pages are:
 
 - [`docs/foundations/cryptographic-foundations.md`](docs/foundations/cryptographic-foundations.md);
+- [`docs/post-quantum/overview.md`](docs/post-quantum/overview.md);
 - [`docs/comparisons/required-comparisons.md`](docs/comparisons/required-comparisons.md);
 - [`docs/validation/release-traceability.md`](docs/validation/release-traceability.md);
 - [`docs/validation/release-acceptance.md`](docs/validation/release-acceptance.md);

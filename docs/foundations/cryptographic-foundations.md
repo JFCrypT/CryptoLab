@@ -23,6 +23,7 @@ must not be credited with a security service that it does not actually provide.
 | Public key | A value intended for distribution and used for operations such as encryption or signature verification. |
 | Private key | A secret asymmetric key used for operations such as decryption, signing, or key agreement. |
 | Shared secret | A secret value computed by key-agreement participants; it normally requires a KDF before application use. |
+| Key encapsulation mechanism (KEM) | An asymmetric construction in which encapsulation under a public key produces a ciphertext and shared key material, while decapsulation uses the private key to recover corresponding key material. |
 | Session key | A key scoped to a defined session, channel, or context. |
 
 ## Parameters and encoded data
@@ -77,6 +78,7 @@ must not be credited with a security service that it does not actually provide.
 | Asymmetric encryption | Confidentiality or short-secret transport under a public key | A digital signature or participant authentication |
 | Authenticated encryption | Confidentiality plus ciphertext/AAD integrity under a shared key | Public verifiability or non-repudiation |
 | Key agreement | A shared secret between participants | Encryption or participant authentication |
+| Key encapsulation | Shared key material plus a KEM ciphertext | Bulk message encryption or participant authentication |
 | Hashing | A deterministic digest | Keyed message authentication |
 | HMAC | Shared-key integrity and message authentication | Public verification or digital signatures |
 | KDF | Context-bound key material | Entropy not present in its input or participant authentication |
@@ -86,3 +88,12 @@ CryptoLab examples repeatedly expose these boundaries. In particular, unauthenti
 Diffie-Hellman and X25519 do not authenticate participants; textbook RSA is not applied
 encryption; HMAC is not a signature; XTS is not authenticated message encryption; and a
 passing test vector is validation evidence rather than certification.
+
+## Post-quantum cryptography
+
+CryptoLab distinguishes a *post-quantum design* from a generic modern primitive. RSA,
+finite-field Diffie-Hellman, elliptic-curve cryptography, X25519, and Ed25519 rely on
+factorization or discrete-logarithm assumptions threatened by Shor's algorithm. Version 1.1.0
+adds ML-KEM (FIPS 203), ML-DSA (FIPS 204), and SLH-DSA (FIPS 205) as library-backed
+standardized alternatives. The label does not imply unconditional security, certification, or
+protocol-level migration correctness.

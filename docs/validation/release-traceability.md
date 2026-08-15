@@ -1,6 +1,6 @@
 # Release traceability
 
-This page maps the principal version 1.0.0 requirements to implementation, documentation, and
+This page maps the principal version 1.1.0 requirements to implementation, documentation, and
 validation evidence.
 
 | Requirement | Implementation | Documentation | Validation evidence |
@@ -17,9 +17,15 @@ validation evidence.
 | Finite-field DH | `src/cryptolab/public_key/diffie_hellman.py` | DH page | group checks, shared-secret equality, MITM laboratory |
 | Educational ECC | `src/cryptolab/public_key/elliptic_curve.py` | educational ECC page | point arithmetic, order, subgroup, and boundary tests |
 | X25519 and Ed25519 | `src/cryptolab/public_key/modern_curves.py` | modern curve pages | RFC 7748 and RFC 8032 vectors, invalid verification tests |
+| PQC educational foundations | `src/cryptolab/post_quantum/foundations.py` | lattice and polynomial foundations | bounded arithmetic, validation, rendering, and CLI tests |
+| ML-KEM / FIPS 203 | `src/cryptolab/post_quantum/ml_kem.py`, OpenSSL backend | ML-KEM page | standardized size checks, mocked backend tests, and native encapsulation/decapsulation round trips |
+| ML-DSA / FIPS 204 | `src/cryptolab/post_quantum/ml_dsa.py`, OpenSSL backend | ML-DSA page | standardized size checks, context tests, invalid signatures, and native sign/verify workflows |
+| SLH-DSA / FIPS 205 | `src/cryptolab/post_quantum/slh_dsa.py`, OpenSSL backend | SLH-DSA page | all 12 parameter profiles, size checks, invalid signatures, and native sign/verify workflows |
+| Classical/PQC comparisons | `src/cryptolab/post_quantum/comparisons.py` | classical versus post-quantum page | human/JSON/LaTeX rendering and CLI tests |
+| Sandboxed PQC backend installation | `scripts/install.sh`, `scripts/install_pqc_backend.sh`, runtime OpenSSL discovery | isolated OpenSSL PQC backend page | release-checker policy checks, backend discovery tests, native PQC CI |
 | Exactly four controlled laboratories | `src/cryptolab/labs/` | laboratory pages | registry and release-readiness checks |
 | Mandatory release readiness | `scripts/check_release.py` | release acceptance and process | metadata, scope, archives, installation, and CI checks |
 | Optional direct SageMath comparison | `scripts/cross_validate.py`, `sagemath/compute_reference.py` | SageMath cross-validation page | dynamic same-input comparison when explicitly executed |
 
 The release checker validates metadata, scope guardrails, required documents, and distribution
-contents. Optional SageMath results are supplementary evidence only.
+contents. The native OpenSSL 3.5+ PQC job is mandatory for 1.1.0 release acceptance. Optional SageMath results remain supplementary evidence only.

@@ -10,7 +10,8 @@ established cryptographic software.
 
 | Version | Supported |
 |---|---|
-| 1.0.x | Yes, after the `v1.0.0` public release tag |
+| 1.1.x | Yes, after the `v1.1.0` public release tag |
+| 1.0.x | Superseded by 1.1.x |
 | Development history before `v1.0.0` | No public release support |
 
 ## Security limitations
@@ -22,6 +23,10 @@ must not be used to protect sensitive information.
 Library-backed modules reduce implementation risk by delegating modern primitives to an
 established library, but CryptoLab still does not claim certification, independent auditing,
 formal verification, complete side-channel resistance, or universal production readiness.
+
+Standardized post-quantum operations in 1.1.0 are delegated to OpenSSL 3.5+ EVP. The
+post-quantum label describes the design goal and standards family; it is not a certification of
+the local OpenSSL build, the host platform, key custody, or any larger protocol.
 
 ## Reporting a vulnerability
 

@@ -12,7 +12,7 @@ body:
   - type: textarea
     id: scope
     attributes:
-      label: Relationship to the approved version 1.0.0 scope
+      label: Relationship to the approved version 1.1.0 scope
     validations:
       required: true
   - type: textarea

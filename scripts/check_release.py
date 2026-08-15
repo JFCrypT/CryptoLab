@@ -10,7 +10,7 @@ import tomllib
 import zipfile
 from pathlib import Path
 
-EXPECTED_VERSION = "1.0.0"
+EXPECTED_VERSION = "1.1.0"
 APPROVED_LAB_FILES = {
     "__init__.py",
     "caesar_brute_force.py",
@@ -30,6 +30,15 @@ REQUIRED_FILES = {
     "SECURITY.md",
     "docs/comparisons/required-comparisons.md",
     "docs/foundations/cryptographic-foundations.md",
+    "docs/post-quantum/overview.md",
+    "docs/post-quantum/backend.md",
+    "docs/post-quantum/quantum-threat-model.md",
+    "docs/post-quantum/lattice-foundations.md",
+    "docs/post-quantum/ml-kem.md",
+    "docs/post-quantum/ml-dsa.md",
+    "docs/post-quantum/slh-dsa.md",
+    "docs/post-quantum/classical-vs-post-quantum.md",
+    "docs/decisions/0012-post-quantum-conventions.md",
     "docs/release-process.md",
     "docs/validation/release-acceptance.md",
     "docs/validation/release-traceability.md",
@@ -37,6 +46,8 @@ REQUIRED_FILES = {
     "sagemath/README.md",
     "sagemath/compute_reference.py",
     "scripts/cross_validate.py",
+    "scripts/install.sh",
+    "scripts/install_pqc_backend.sh",
 }
 FORBIDDEN_PATHS = {
     "src/cryptolab/ai",
@@ -114,15 +125,19 @@ def check_repository(root: Path) -> list[str]:
 
     changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
     require(
+        "## [1.1.0] - 2026-08-15" in changelog,
+        "CHANGELOG.md has no dated 1.1.0 release section",
+    )
+    require(
         "## [1.0.0] - 2026-08-02" in changelog,
-        "CHANGELOG.md has no dated 1.0.0 release section",
+        "CHANGELOG.md no longer preserves the 1.0.0 release history",
     )
     messages.append("changelog release section: present")
 
     roadmap = (root / "docs/roadmap.md").read_text(encoding="utf-8")
     require(
-        "10. **Completed:**" in roadmap,
-        "roadmap does not mark milestone 10 complete",
+        "11. **Completed:**" in roadmap,
+        "roadmap does not mark milestone 11 complete",
     )
     require(
         "**Next:**" not in roadmap,
@@ -183,7 +198,8 @@ def check_repository(root: Path) -> list[str]:
     require(
         "needs.quality.result" in workflow
         and "needs.tests.result" in workflow
-        and "needs.package.result" in workflow,
+        and "needs.package.result" in workflow
+        and "needs.pqc-native.result" in workflow,
         "CI release gate does not enforce all prerequisite jobs",
     )
     require(
@@ -203,6 +219,52 @@ def check_repository(root: Path) -> list[str]:
         "optional SageMath workflow does not use the dynamic architecture",
     )
     messages.append("CI policy: mandatory CI is SageMath-free; optional workflow is available")
+
+    require("pqc-native:" in workflow, "CI has no native PQC backend job")
+    require("ubuntu-26.04" in workflow, "CI PQC job does not target an OpenSSL 3.5+ runner")
+    require(
+        "post-quantum backend" in workflow and "test_post_quantum_workflows.py" in workflow,
+        "CI PQC job does not exercise the standardized backend",
+    )
+    messages.append("PQC CI policy: OpenSSL 3.5+ standardized backend is release-gated")
+
+    pqc_source = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in (root / "src/cryptolab/post_quantum").glob("*.py")
+    )
+    for standard, algorithm in (
+        ("FIPS 203", "ML-KEM"),
+        ("FIPS 204", "ML-DSA"),
+        ("FIPS 205", "SLH-DSA"),
+    ):
+        require(standard in pqc_source, f"PQC source omits {standard}")
+        require(algorithm in pqc_source, f"PQC source omits {algorithm}")
+    require("OpenSSL 3.5" in pqc_source, "PQC source does not document its OpenSSL 3.5+ backend")
+    messages.append("PQC scope: FIPS 203, FIPS 204, and FIPS 205 library-backed support present")
+
+    installer = (root / "scripts/install_pqc_backend.sh").read_text(encoding="utf-8")
+    general_installer = (root / "scripts/install.sh").read_text(encoding="utf-8")
+    backend_docs = (root / "docs/post-quantum/backend.md").read_text(encoding="utf-8")
+    backend_source = (root / "src/cryptolab/post_quantum/openssl_backend.py").read_text(
+        encoding="utf-8"
+    )
+    require('OPENSSL_VERSION="3.5.7"' in installer, "PQC installer does not pin OpenSSL 3.5.7")
+    require("OPENSSL_SHA256=" in installer, "PQC installer does not pin the OpenSSL checksum")
+    require("no-shared" in installer, "PQC installer does not build an isolated no-shared backend")
+    require("/usr/bin/openssl" in backend_docs, "PQC backend documentation omits system isolation")
+    require(
+        ".local/share" in backend_docs and ".local/share" in installer,
+        "PQC backend is not documented and installed in a user-local sandbox",
+    )
+    require(
+        "install_pqc_backend.sh" in general_installer,
+        "general installer does not provision the PQC backend",
+    )
+    require(
+        "cryptolab/openssl/current/bin/openssl" in backend_source,
+        "runtime backend discovery omits the CryptoLab-managed user-local backend",
+    )
+    messages.append("PQC installation policy: pinned isolated user-local OpenSSL backend present")
 
     ignored = {
         root / "scripts/check_release.py",
@@ -226,6 +288,11 @@ def check_repository(root: Path) -> list[str]:
     for required_page in (
         "comparisons/required-comparisons.md",
         "foundations/cryptographic-foundations.md",
+        "post-quantum/overview.md",
+        "post-quantum/backend.md",
+        "post-quantum/ml-kem.md",
+        "post-quantum/ml-dsa.md",
+        "post-quantum/slh-dsa.md",
         "release-process.md",
         "validation/release-acceptance.md",
         "validation/release-traceability.md",
@@ -266,6 +333,9 @@ def check_distributions(root: Path, dist_dir: Path) -> list[str]:
     for suffix in (
         "cryptolab/__init__.py",
         "cryptolab/cli/app.py",
+        "cryptolab/post_quantum/ml_kem.py",
+        "cryptolab/post_quantum/ml_dsa.py",
+        "cryptolab/post_quantum/slh_dsa.py",
         "cryptolab/data/alphabets/latin_upper.json",
         "cryptolab/data/alphabets/spanish_upper.json",
         "cryptolab/py.typed",
@@ -286,10 +356,17 @@ def check_distributions(root: Path, dist_dir: Path) -> list[str]:
         "README.md",
         "LICENSE",
         "docs/comparisons/required-comparisons.md",
+        "docs/post-quantum/overview.md",
+        "docs/post-quantum/backend.md",
+        "docs/post-quantum/ml-kem.md",
+        "docs/post-quantum/ml-dsa.md",
+        "docs/post-quantum/slh-dsa.md",
         "docs/validation/release-acceptance.md",
         "sagemath/README.md",
         "sagemath/compute_reference.py",
         "scripts/cross_validate.py",
+        "scripts/install.sh",
+        "scripts/install_pqc_backend.sh",
         "scripts/check_release.py",
     ):
         require(

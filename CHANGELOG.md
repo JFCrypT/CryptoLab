@@ -2,12 +2,41 @@
 
 All notable changes to CryptoLab will be documented in this file.
 
-CryptoLab uses one initial public release, version 1.0.0. No public pre-release is
-planned.
+CryptoLab's initial public release is version 1.0.0. Version 1.1.0 is the first backward-compatible
+feature release and adds the explicitly approved post-quantum cryptography scope.
 
 ## [Unreleased]
 
-No changes are documented after version 1.0.0.
+No changes are documented after version 1.1.0.
+
+## [1.1.0] - 2026-08-15
+
+### Added
+
+- A new `post-quantum` CLI group without changing the existing 1.0.0 command behavior.
+- ML-KEM key generation, encapsulation, and decapsulation for ML-KEM-512, ML-KEM-768,
+  and ML-KEM-1024 through the OpenSSL 3.5+ EVP provider.
+- ML-DSA key generation, signing, context handling, and verification for ML-DSA-44,
+  ML-DSA-65, and ML-DSA-87 through OpenSSL 3.5+ EVP.
+- SLH-DSA key generation, signing, context handling, and verification for all twelve FIPS 205
+  SHA-2 and SHAKE parameter sets through OpenSSL 3.5+ EVP.
+- Backend inspection with automatic discovery and `CRYPTOLAB_OPENSSL` override support.
+- A one-command source installer and a sandboxed OpenSSL 3.5 LTS backend installer that
+  preserves the operating-system OpenSSL installation.
+- Tiny bounded educational negacyclic polynomial multiplication and LWE-style examples.
+- Classical/post-quantum key-establishment, signature, and overview comparisons.
+- Dedicated post-quantum documentation, ADR 0012, test coverage, and a release-gated native
+  OpenSSL 3.5+ CI workflow.
+
+### Changed
+
+- Release metadata, traceability, acceptance documentation, MkDocs navigation, and README
+  now describe version 1.1.0 and its PQC extension.
+
+### Unchanged
+
+- All 1.0.0 mathematical, classical, symmetric, hashing, RSA, DH, ECC, X25519, Ed25519,
+  SageMath-optional, and exactly-four-laboratory behavior remains in place.
 
 ## [1.0.0] - 2026-08-02
 
@@ -112,5 +141,6 @@ No changes are documented after version 1.0.0.
 - Clarified that pre-commit hook installation requires an initialized Git repository.
 - Finalized type-only imports and dataclass narrowing for clean Ruff and mypy checks.
 
-[Unreleased]: https://github.com/JFCrypT/CryptoLab/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/JFCrypT/CryptoLab/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/JFCrypT/CryptoLab/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/JFCrypT/CryptoLab/releases/tag/v1.0.0

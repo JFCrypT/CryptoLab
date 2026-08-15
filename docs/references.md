@@ -80,6 +80,26 @@ formal verification, or an independent audit.
 The educational curves in CryptoLab are independent teaching examples. RFC vectors validate
 library interoperability; they do not certify CryptoLab or establish production readiness.
 
+
+## Post-quantum cryptography
+
+- NIST FIPS 203, *Module-Lattice-Based Key-Encapsulation Mechanism Standard*, for ML-KEM,
+  its three parameter sets, encodings, algorithms, and standardized sizes.
+- NIST FIPS 204, *Module-Lattice-Based Digital Signature Standard*, for ML-DSA, its three
+  parameter sets, signing/verification rules, contexts, and standardized sizes.
+- NIST FIPS 205, *Stateless Hash-Based Digital Signature Standard*, for SLH-DSA and the
+  twelve SHA-2/SHAKE parameter sets.
+- OpenSSL 3.5 documentation for EVP KEM/signature support, ML-KEM, ML-DSA, SLH-DSA, and
+  `openssl pkeyutl` encapsulation, decapsulation, signing, verification, and context options.
+- The official OpenSSL release archive and checksum metadata for the pinned 3.5 LTS source
+  used by CryptoLab's isolated user-local PQC backend installer.
+- NIST post-quantum cryptography project documentation for the standardization context and
+  security-category terminology.
+
+The FIPS documents are normative for CryptoLab's parameter names and raw standardized sizes.
+OpenSSL supplies the cryptographic implementation. CryptoLab's educational ring and LWE-style
+examples are explanatory mathematics only and are not substitutes for the FIPS algorithms.
+
 ## Validation, packaging, and optional direct cross-validation
 
 - SageMath documentation for integer rings, modular rings, CRT, multiplicative order, and

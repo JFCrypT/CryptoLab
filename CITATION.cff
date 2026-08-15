@@ -8,11 +8,12 @@ authors:
 repository-code: "https://github.com/JFCrypT/CryptoLab"
 url: "https://github.com/JFCrypT/CryptoLab"
 license: MIT
-version: 1.0.0
-date-released: 2026-08-02
+version: 1.1.0
+date-released: 2026-08-15
 keywords:
   - cryptography
   - number theory
   - cryptanalysis
   - education
   - applied cryptography
+  - post-quantum cryptography

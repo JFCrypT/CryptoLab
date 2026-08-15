@@ -24,7 +24,7 @@ def test_release_version_is_consistent() -> None:
 
     assert citation_match is not None
     citation_version = citation_match.group(1).strip('"')
-    assert project_version == __version__ == citation_version == "1.0.0"
+    assert project_version == __version__ == citation_version == "1.1.0"
 
 
 def test_exact_controlled_laboratory_registry() -> None:
@@ -36,6 +36,11 @@ def test_release_documentation_exists() -> None:
     required = (
         "docs/comparisons/required-comparisons.md",
         "docs/foundations/cryptographic-foundations.md",
+        "docs/post-quantum/overview.md",
+        "docs/post-quantum/backend.md",
+        "docs/post-quantum/ml-kem.md",
+        "docs/post-quantum/ml-dsa.md",
+        "docs/post-quantum/slh-dsa.md",
         "docs/release-process.md",
         "docs/validation/release-acceptance.md",
         "docs/validation/release-traceability.md",
@@ -74,5 +79,40 @@ def test_sagemath_cross_validation_is_optional_dynamic_and_isolated() -> None:
 
 def test_roadmap_marks_complete_scope() -> None:
     roadmap = (ROOT / "docs/roadmap.md").read_text(encoding="utf-8")
-    assert "10. **Completed:**" in roadmap
+    assert "11. **Completed:**" in roadmap
     assert "**Next:**" not in roadmap
+
+
+def test_post_quantum_release_scope_is_standardized_and_library_backed() -> None:
+    source = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in (ROOT / "src/cryptolab/post_quantum").glob("*.py")
+    )
+    workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "FIPS 203" in source
+    assert "ML-KEM" in source
+    assert "FIPS 204" in source
+    assert "ML-DSA" in source
+    assert "FIPS 205" in source
+    assert "SLH-DSA" in source
+    assert "OpenSSL 3.5" in source
+    assert "pqc-native:" in workflow
+    assert "ubuntu-26.04" in workflow
+    assert "needs.pqc-native.result" in workflow
+
+
+def test_pqc_backend_installation_is_isolated_and_documented() -> None:
+    installer = (ROOT / "scripts/install_pqc_backend.sh").read_text(encoding="utf-8")
+    general_installer = (ROOT / "scripts/install.sh").read_text(encoding="utf-8")
+    backend_docs = (ROOT / "docs/post-quantum/backend.md").read_text(encoding="utf-8")
+    backend_source = (ROOT / "src/cryptolab/post_quantum/openssl_backend.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert 'OPENSSL_VERSION="3.5.7"' in installer
+    assert "OPENSSL_SHA256=" in installer
+    assert "no-shared" in installer
+    assert "install_pqc_backend.sh" in general_installer
+    assert ".local/share/cryptolab/openssl" in backend_docs
+    assert "/usr/bin/openssl" in backend_docs
+    assert "cryptolab/openssl/current/bin/openssl" in backend_source

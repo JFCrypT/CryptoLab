@@ -1,7 +1,8 @@
 # Release status and future scope
 
-CryptoLab has one initial public release: version 1.0.0. The milestones below describe the
-internal implementation order only and do not define pre-releases.
+CryptoLab's initial public release is version 1.0.0. Version 1.1.0 is the approved
+backward-compatible post-quantum extension. The milestones below describe implementation
+order and do not define pre-releases.
 
 1. **Completed:** repository, architecture, conventions, and integer arithmetic.
 2. **Completed:** linear Diophantine equations and modular arithmetic.
@@ -19,8 +20,11 @@ internal implementation order only and do not define pre-releases.
    comparison, and signature-versus-MAC comparison.
 10. **Completed:** comparison consolidation, optional dynamic SageMath cross-validation,
     traceability, documentation consolidation, distribution checks, and release hardening.
+11. **Completed:** ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), bounded PQC
+    foundations, classical/post-quantum comparisons, OpenSSL 3.5+ native validation, and
+    version 1.1.0 documentation/release hardening.
 
-The `v1.0.0` tag is created only after the complete acceptance sequence passes on the final
+The `v1.1.0` tag is created only after the complete acceptance sequence passes on the final
 commit. Future additions require explicit approval and must preserve the limited didactic
-scope. No additional primitive, attack laboratory, network service, GUI, web application,
-PQC module, or production security subsystem is implicitly planned.
+scope. No additional primitive, PQC algorithm, attack laboratory, network service, GUI, web
+application, or production security subsystem is implicitly planned.

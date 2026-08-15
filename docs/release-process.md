@@ -8,7 +8,7 @@ CryptoLab uses a manual, auditable release process.
 4. Build the wheel and source distribution.
 5. Run the repository-owned release checker against the built distributions.
 6. Install the wheel in an isolated environment and execute representative CLI commands.
-7. Confirm that every mandatory GitHub Actions job succeeds.
+7. Confirm that every mandatory GitHub Actions job succeeds, including the native OpenSSL 3.5+ PQC job.
 8. Create the release commit if needed.
 9. Create the annotated version tag only after all mandatory evidence is complete.
 
@@ -25,6 +25,16 @@ uv run mkdocs build --strict
 uv build --no-sources
 uv run python scripts/check_release.py --dist-dir dist
 ```
+
+## Post-quantum release evidence
+
+Standardized PQC commands use OpenSSL 3.5+ EVP. The release-gated `pqc-native` CI job must
+report a ready backend and run the real integration workflows in
+`tests/integration/test_post_quantum_workflows.py`. The repository must also contain the
+pinned user-local backend installer and automatic runtime discovery documented in
+`docs/post-quantum/backend.md`. The installer must not replace the operating-system OpenSSL.
+This requirement is separate from SageMath and does not change the existing 1.0.0 command
+backends.
 
 ## Optional SageMath comparison
 
@@ -48,7 +58,7 @@ mandatory release-readiness dependency chain.
 The annotated tag must identify the exact validated commit:
 
 ```bash
-git tag -a v1.0.0 -m "CryptoLab 1.0.0"
+git tag -a v1.1.0 -m "CryptoLab 1.1.0"
 ```
 
 A release must not claim certification, formal verification, independent auditing, universal

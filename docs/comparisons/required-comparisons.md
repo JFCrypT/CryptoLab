@@ -1,6 +1,6 @@
 # Consolidated required comparisons
 
-This page consolidates every comparison required for version 1.0.0. Detailed derivations
+This page consolidates every comparison required for version 1.1.0. Detailed derivations
 and command examples remain in the topic-specific pages.
 
 ## Educational versus library-backed implementations
@@ -136,3 +136,28 @@ universally superior.
 Encryption and signing are not interchangeable. RSA-OAEP has a strict message-size limit
 and belongs in short-secret or hybrid-encryption contexts; CryptoLab explains hybrid
 encryption but does not define a production envelope format.
+
+## Classical versus post-quantum key establishment
+
+| Property | Finite-field DH | X25519 | ML-KEM |
+|---|---|---|---|
+| Operation model | Key agreement | Key agreement | Key encapsulation |
+| Main family | Finite-field discrete logarithm | Elliptic-curve discrete logarithm | Module lattices / Module-LWE |
+| Post-quantum design | No | No | Yes |
+| CryptoLab implementation | Educational | Library-backed | Library-backed through OpenSSL 3.5+ |
+| Authentication by itself | No | No | No |
+
+ML-KEM is not called Diffie-Hellman and is not bulk encryption. Its encapsulation/decapsulation
+API must remain conceptually distinct from bilateral key agreement.
+
+## Classical versus post-quantum digital signatures
+
+| Property | RSA-PSS | Ed25519 | ML-DSA | SLH-DSA |
+|---|---|---|---|---|
+| Main family | Integer factorization | Elliptic curves | Module lattices | Stateless hash-based |
+| Post-quantum design | No | No | Yes | Yes |
+| Signature size characteristic | Modulus-sized | Compact fixed 64 B | Larger, parameter-set dependent | Very large, parameter-set dependent |
+| CryptoLab implementation | Library-backed | Library-backed | OpenSSL 3.5+ library-backed | OpenSSL 3.5+ library-backed |
+
+ML-DSA and SLH-DSA deliberately provide different post-quantum assumption families. See the
+post-quantum pages for exact standardized raw sizes and parameter sets.
