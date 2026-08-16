@@ -272,7 +272,7 @@ Python 3.12, 3.13, and 3.14 are the intended Python CI matrix for version 1.1.0.
 From a source checkout, the recommended installation is:
 
 ```bash
-cd /home/jfcrypt/Documents/Proyectos/CryptoLab
+cd /path/to/CryptoLab
 ./scripts/install.sh
 ```
 
@@ -631,7 +631,7 @@ the backend is available, the native standardized PQC integration tests run as p
 Optionally compare one supported educational calculation with SageMath:
 
 ```bash
-source /home/jfcrypt/miniforge3/bin/activate sage
+source /path/to/miniforge3/bin/activate sage
 
 uv run python scripts/cross_validate.py -- \
   modular inverse 13 200
